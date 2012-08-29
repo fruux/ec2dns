@@ -26,7 +26,7 @@ ubuntu@ip-9-99-99-99:~$
 
 ## Installation
 
-* Create a composer.json file with your favourite text editor and paste the following content (or update your existing composer.json accordingly, if you already use this approach for something else).
+* Create the file `~/bin/composer.json` with your favourite text editor and paste the following content (or update your existing composer.json accordingly, if you already use this approach for something else).
 
 ```
 {
