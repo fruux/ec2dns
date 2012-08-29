@@ -17,6 +17,11 @@ i-12345678: appserver-1    ec9-99-99-99-99.compute-1.amazonaws.com
 ubuntu@ip-9-99-99-99:~$ 
 ```
 
+## Prerequisites
+
+* obviously an AWS account and at least one running EC2 instance
+* correctly set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables
+
 ## Installation
 
 ```
