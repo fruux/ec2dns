@@ -20,13 +20,13 @@ ubuntu@ip-9-99-99-99:~$
 ## Prerequisites
 
 * Obviously an AWS account and at least one running EC2 instance.
-* Correctly set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.
+* Correctly set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables.
 * You need [Composer](http://getcomposer.org) to install the dependencies - you should install it globally, as described [here](http://getcomposer.org/doc/00-intro.md#globally).
-* You should have a `~/bin` directory and it should be included in your PATH environment variable.
+* You should have a `~/bin` directory and it should be included in your `PATH` environment variable.
 
 ## Installation
 
-* Create the file `~/bin/composer.json` with your favourite text editor and paste the following content (or update your existing composer.json accordingly, if you already use this approach for something else).
+* Create the file `~/bin/composer.json` with your favourite text editor and paste the following content (or update your existing `composer.json` accordingly, if you already use this approach for something else).
 
 ```
 {
@@ -42,8 +42,8 @@ ubuntu@ip-9-99-99-99:~$
 ```
 
 * Save the file.
-* Run `composer install` in your ~/bin directory.
-* Composer will now install ec2host and its dependencies.
+* Run `composer install` in your `~/bin` directory.
+* Composer will now install `ec2host` and its dependencies.
 
 ## Updating
 
