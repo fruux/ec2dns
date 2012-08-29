@@ -1,7 +1,21 @@
 #!/usr/bin/php
 <?php
 
-include __DIR__ . '/vendor/autoload.php';
+// This sucks.. we have to try to find the composer autoloader. But chances
+// are, we can't find it this way. So we'll do our bestest
+// credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
+
+$paths = array(
+    __DIR__ . '/../vendor/autoload.php',  // In case the project is cloned directly
+    __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
+);
+
+foreach($paths as $path) {
+    if (file_exists($path)) {
+        include $path;
+        break;
+    }
+}
 
 $key = getenv('AWS_ACCESS_KEY_ID');
 $secret = getenv('AWS_SECRET_ACCESS_KEY');

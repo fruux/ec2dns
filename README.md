@@ -21,6 +21,7 @@ ubuntu@ip-9-99-99-99:~$
 
 * obviously an AWS account and at least one running EC2 instance
 * correctly set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables
+* you need [Composer](http://getcomposer.org) to install the dependencies
 
 ## Installation
 
@@ -28,7 +29,7 @@ ubuntu@ip-9-99-99-99:~$
 cd /usr/local
 git clone https://github.com/DominikTo/ec2dns.git
 cd /ec2dns
-./composer.phar install
+composer.phar install
 ln -s /usr/local/ec2dns/ec2host /usr/local/bin/ec2host
 ```
 

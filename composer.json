@@ -1,8 +1,10 @@
 {
-    "name": "DominikTo/ec2dns",
+    "name": "dominikto/ec2dns",
+    "description": "ec2dns is a command line tool that displays public hostnames of your EC2 instances.",
     "require": {
         "amazonwebservices/aws-sdk-for-php": "1.5.13"
     },
+    "bin": ["bin/ec2host"],
     "authors": [
         {
             "name": "Dominik Tobschall",
