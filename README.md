@@ -19,25 +19,36 @@ ubuntu@ip-9-99-99-99:~$
 
 ## Prerequisites
 
-* obviously an AWS account and at least one running EC2 instance
-* correctly set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables
-* you need [Composer](http://getcomposer.org) to install the dependencies
+* Obviously an AWS account and at least one running EC2 instance.
+* Correctly set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.
+* You need [Composer](http://getcomposer.org) to install the dependencies - you should install it globally, as described [here](http://getcomposer.org/doc/00-intro.md#globally).
+* You should have a `~/bin` directory and it should be included in your PATH environment variable.
 
 ## Installation
 
+* Create a composer.json file with your favourite text editor and paste the following content (or update your existing composer.json accordingly, if you already use this approach for something else).
+
 ```
-cd /usr/local
-git clone https://github.com/DominikTo/ec2dns.git
-cd /ec2dns
-composer.phar install
-ln -s /usr/local/ec2dns/ec2host /usr/local/bin/ec2host
+{
+    "require" : {
+
+        "dominikto/ec2dns" : "dev-master"
+
+    },
+    "config" : {
+        "bin-dir" : "."
+    }
+}
 ```
+
+* Save the file.
+* Run `composer install` in your ~/bin directory.
+* Composer will now install ec2host and its dependencies.
 
 ## Updating
 
 ```
-cd /usr/local/ec2dns
-git pull
+cd ~/bin
 ./composer.phar update
 ```
 
