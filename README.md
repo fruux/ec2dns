@@ -49,7 +49,7 @@ ubuntu@ip-9-99-99-99:~$
 
 ```
 cd ~/bin
-./composer.phar update
+composer update
 ```
 
 ## Credits
