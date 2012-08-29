@@ -50,10 +50,13 @@ foreach ($instances->body->reservationSet->item as $instance) {
     $instanceId = $instance->instancesSet->item->instanceId;
     $dnsName = $instance->instancesSet->item->dnsName;
 
-    if($tag) {
-        echo $instanceId.": ".$tag."\t".$dnsName."\n";
+    if(isset($argv[1])) {
+        echo $dnsName."\n";
     } else {
-        echo $instanceId.": [EMPTY NAME TAG]\t".$dnsName."\n";
+        if($tag) {
+            echo $instanceId.": ".$tag."\t".$dnsName."\n";
+        } else {
+            echo $instanceId.": [EMPTY NAME TAG]\t".$dnsName."\n";
+        }
     }
-    
 }
