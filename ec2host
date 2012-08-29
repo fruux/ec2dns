@@ -1,0 +1,59 @@
+#!/usr/bin/php
+<?php
+
+include __DIR__ . '/vendor/autoload.php';
+
+$key = getenv('AWS_ACCESS_KEY_ID');
+$secret = getenv('AWS_SECRET_ACCESS_KEY');
+
+if(empty($key) || empty($secret)) {
+    die("Error: AWS_ACCESS_KEY_ID and/or AWS_SECRET_ACCESS_KEY ENV variables are not set!\n");
+} 
+
+$ec2 = new \AmazonEC2(
+    array(
+        'key' => $key,
+        'secret' => $secret
+    )
+);
+
+$filters = array();
+array_push($filters, array('Name' => 'instance-state-name', 'Value' => 'running'));
+
+if(isset($argv[1])) {
+    array_push($filters, array('Name' => 'tag:Name', 'Value' => $argv[1]));
+}
+
+$instances = $ec2->describe_instances(array(
+    'Filter' => $filters
+));
+
+
+if (!$instances->isOK()) {
+    die("Error: Request failed!\n");
+}
+
+foreach ($instances->body->reservationSet->item as $instance) {
+    $tag = false;
+    $instanceId = false;
+    $dnsName = false;
+
+    foreach($instance->instancesSet->item->tagSet->item as $tag) {
+        if($tag->key == 'Name' && !empty($tag->value)) {
+            $tag = $tag->value;
+            break;
+        } else {
+            $tag = false;
+        }
+    }
+
+    $instanceId = $instance->instancesSet->item->instanceId;
+    $dnsName = $instance->instancesSet->item->dnsName;
+
+    if($tag) {
+        echo $instanceId.": ".$tag."\t".$dnsName."\n";
+    } else {
+        echo $instanceId.": [EMPTY NAME TAG]\t".$dnsName."\n";
+    }
+    
+}

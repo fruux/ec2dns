@@ -1,0 +1,17 @@
+{
+    "hash": "26777690aacdf95f5ea728adf3d89458",
+    "packages": [
+        {
+            "package": "amazonwebservices/aws-sdk-for-php",
+            "version": "1.5.13"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ]
+}

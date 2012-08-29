@@ -1,0 +1,12 @@
+{
+    "name": "DominikTo/ec2dns",
+    "require": {
+        "amazonwebservices/aws-sdk-for-php": "1.5.13"
+    },
+    "authors": [
+        {
+            "name": "Dominik Tobschall",
+            "email": "dtobschall@gmail.com"
+        }
+    ]
+}
