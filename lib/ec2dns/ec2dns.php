@@ -1,14 +1,11 @@
 <?php
 
-namespace ec2dns\ec2dns;
+namespace ec2dns;
 
 /**
  * This is the main application class.
- *
  * It is responsible for configuring the environment.
  *
- * @package ec2dns
- * @subpackage ec2dns
  * @copyright Copyright (C) 2012 Dominik Tobschall. All rights reserved.
  * @author Dominik Tobschall (http://github.com/DominikTo/)
  */

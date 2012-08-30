@@ -1,12 +1,10 @@
 <?php
 
-namespace ec2dns\ec2;
+namespace ec2dns;
 
 /**
  * This class handles the communication with the ec2 api via the aws-sdk-for-php.
  *
- * @package ec2dns
- * @subpackage ec2
  * @copyright Copyright (C) 2012 Dominik Tobschall. All rights reserved.
  * @author Dominik Tobschall (http://github.com/DominikTo/)
  */
@@ -49,7 +47,7 @@ class ec2 {
 
         } else {
 
-            throw new LogicException('AWS Key or Secret are not set.');
+            throw new \LogicException('AWS Key or Secret are not set.');
 
         }
 
@@ -80,7 +78,7 @@ class ec2 {
         ));
 
         if (!$instances->isOK()) {
-            throw new RuntimeException('Request failed!');
+            throw new \RuntimeException('Request failed!');
         }
 
         foreach ($instances->body->reservationSet->item as $instance) {

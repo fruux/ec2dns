@@ -1,16 +1,13 @@
 <?php
 
-namespace ec2dns\ec2host;
+namespace ec2dns;
 
-use ec2dns\ec2dns\ec2dns;
-use ec2dns\ec2\ec2;
+use ec2dns\ec2dns;
+use ec2dns\ec2;
 
 /**
  * This class provides the functionality for the ec2host application
  *
- *
- * @package ec2dns
- * @subpackage ec2host
  * @copyright Copyright (C) 2012 Dominik Tobschall. All rights reserved.
  * @author Dominik Tobschall (http://github.com/DominikTo/)
  */

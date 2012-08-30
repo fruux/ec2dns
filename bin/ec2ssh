@@ -21,8 +21,8 @@ foreach($paths as $path) {
 /*
  * Import namespaces
  */
-use ec2dns\ec2dns\ec2dns;
-use ec2dns\ec2host\ec2host;
+use ec2dns\ec2dns;
+use ec2dns\ec2host;
 
 /*
  * Die if tag name parameter is not set
