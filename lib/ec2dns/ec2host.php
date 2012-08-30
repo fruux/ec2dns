@@ -29,20 +29,14 @@ class ec2host {
      * @param ec2dns $app
      * @param string $instanceTag
      */
-    public function __construct(ec2dns $app, $instanceTag = false) {
+    public function __construct(ec2 $ec2, $instanceTag = false) {
 
-        $this->app = $app;
+        $this->ec2 = $ec2;
         $this->instanceTag = $instanceTag;
 
-
-        $this->initEC2();
         $this->initFilters();
         $this->run();
 
-    }
-
-    protected function initEC2() {
-        $this->ec2 = new ec2($this->app);
     }
 
     /**

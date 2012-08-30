@@ -21,22 +21,21 @@ foreach($paths as $path) {
 /*
  * Import namespaces
  */
-use ec2dns\ec2dns;
+use ec2dns\ec2;
 use ec2dns\ec2host;
 
 /*
  * Instantiate main class.
  */
-$app = new ec2dns();
-$app->setCredentials(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
+$ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
 
 /*
  * Run ec2host
  */
 if(isset($argv[1])) {
-    $ec2host = new ec2host($app, $argv[1]);
+    $ec2host = new ec2host($ec2, $argv[1]);
 } else {
-    $ec2host = new ec2host($app);
+    $ec2host = new ec2host($ec2);
 }
 
 /*
