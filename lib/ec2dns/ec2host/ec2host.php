@@ -1,0 +1,98 @@
+<?php
+
+namespace ec2dns\ec2host;
+
+use ec2dns\ec2dns\ec2dns;
+use ec2dns\ec2\ec2;
+
+/**
+ * This class provides the functionality for the ec2host application
+ *
+ *
+ * @package ec2dns
+ * @subpackage ec2host
+ * @copyright Copyright (C) 2012 Dominik Tobschall. All rights reserved.
+ * @author Dominik Tobschall (http://github.com/DominikTo/)
+ */
+class ec2host {
+
+    protected $ec2;
+
+    protected $app;
+
+    protected $instanceTag;
+
+    protected $emptyTag = "[No 'Name' tag]";
+
+    public $instances = array();
+
+    /**
+     * Creates the class.
+     *
+     * @param ec2dns $app
+     * @param string $instanceTag
+     */
+    public function __construct(ec2dns $app, $instanceTag = false) {
+
+        $this->app = $app;
+        $this->instanceTag = $instanceTag;
+
+
+        $this->initEC2();
+        $this->initFilters();
+        $this->run();
+
+    }
+
+    protected function initEC2() {
+        $this->ec2 = new ec2($this->app);
+    }
+
+    /**
+     * This method initializes the filters in the instance of ec2dns\ec2\ec2.
+     *
+     * @return void
+     */
+    protected function initFilters() {
+
+        $this->ec2->addFilter('instance-state-name', 'running');
+
+        if($this->instanceTag) {
+            $this->ec2->addFilter('tag:Name', $this->instanceTag);
+        }
+    }
+
+     /**
+     * This method executes the request via the instance of ec2dns\ec2\ec2
+     * and stores the result in the class.
+     *
+     * @return void
+     */
+    protected function run() {
+
+        while ($instance = $this->ec2->getNext()) {
+
+            $tag = false;
+            $instanceId = false;
+            $dnsName = false;
+
+            foreach($instance->instancesSet->item->tagSet->item as $tag) {
+                if($tag->key == 'Name' && !empty($tag->value)) {
+                    $tag = $tag->value;
+                    break;
+                } else {
+                    $tag = false;
+                }
+            }
+
+            $instanceId = $instance->instancesSet->item->instanceId;
+            $dnsName = $instance->instancesSet->item->dnsName;
+            $tag = ( $tag ) ? $tag : $this->emptyTag;
+
+            array_push($this->instances, array("instanceId" => $instanceId, "dnsName" => $dnsName, "tag" => $tag));
+
+        }
+
+    }
+
+}

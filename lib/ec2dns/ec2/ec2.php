@@ -18,8 +18,6 @@ class ec2 {
 
     protected $instances = array();
 
-    protected $emptyTag = "[No 'Name' tag]";
-
     /**
      * Creates the class.
      *
@@ -86,25 +84,7 @@ class ec2 {
         }
 
         foreach ($instances->body->reservationSet->item as $instance) {
-            $tag = false;
-            $instanceId = false;
-            $dnsName = false;
-
-            foreach($instance->instancesSet->item->tagSet->item as $tag) {
-                if($tag->key == 'Name' && !empty($tag->value)) {
-                    $tag = $tag->value;
-                    break;
-                } else {
-                    $tag = false;
-                }
-            }
-
-            $instanceId = $instance->instancesSet->item->instanceId;
-            $dnsName = $instance->instancesSet->item->dnsName;
-            $tag = ( $tag ) ? $tag : $this->emptyTag;
-
-            array_push($this->instances, array("instanceId" => $instanceId, "dnsName" => $dnsName, "tag" => $tag));
-
+            array_push($this->instances, $instance);
         }
 
     }

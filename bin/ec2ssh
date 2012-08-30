@@ -19,25 +19,55 @@ foreach($paths as $path) {
 }
 
 /*
- * 
+ * Import namespaces
  */
-if(isset($argv[1])) {
+use ec2dns\ec2dns\ec2dns;
+use ec2dns\ec2host\ec2host;
 
-    $username = "";
-    if(strpos($argv[1], "@")) {
-        $parameter = explode("@", $argv[1]);
-        $username = $parameter[0];
-        $tag = $parameter[1];
-    } else {
-        $tag = $argv[1];
-    }
+/*
+ * Die if tag name parameter is not set
+ */
+if(!isset($argv[1])) {
+    die('No tag name given!');
+}
 
-    if($dnsName = shell_exec(__DIR__.'/ec2host '.$tag)) {
-        passthru('ssh '.((!empty($username)) ? $username : 'ubuntu').'@'.$dnsName);
-    } else {
-        die();
-    }
-    
+/*
+ * Instantiate main class.
+ */
+$app = new ec2dns();
+$app->setCredentials(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
+
+/*
+ * Extract user if present and set the tag.
+ */
+$user = "";
+if(strpos($argv[1], "@")) {
+    $parameter = explode("@", $argv[1]);
+    $user = $parameter[0];
+    $tag = $parameter[1];
+} else {
+    $user = "ubuntu";
+    $tag = $argv[1];
+}
+
+/*
+ * Get hostname for tag.
+ */
+$ec2host = new ec2host($app, $tag);
+if($ec2host->instances) {
+    $dnsName = $ec2host->instances[0]['dnsName'];    
 } else {
     die();
 }
+
+/*
+ * Start SSH session
+ * 
+ * @todo handle ssh parameters, execution of commands via ssh and set a nice prompt with the tag name.
+ */
+if($dnsName) {
+    passthru('ssh '.$user.'@'.$dnsName);
+} else {
+    die();
+}
+    

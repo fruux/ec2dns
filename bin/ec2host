@@ -21,34 +21,30 @@ foreach($paths as $path) {
 /*
  * Import namespaces
  */
-use \ec2dns\ec2dns\ec2dns;
-use \ec2dns\ec2\ec2;
+use ec2dns\ec2dns\ec2dns;
+use ec2dns\ec2host\ec2host;
 
 /*
- * Instantiate classes.
+ * Instantiate main class.
  */
 $app = new ec2dns();
 $app->setCredentials(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
 
-$ec2 = new ec2($app);
+
 
 /*
- * Set filters.
- * We are only interested in running instances.
- */
-$ec2->addFilter('instance-state-name', 'running');
-
-/*
- * Additionally filter by tag, if one was set via the cli parameter.
+ * Run ec2host
  */
 if(isset($argv[1])) {
-    $ec2->addFilter('tag:Name', $argv[1]);
+    $ec2host = new ec2host($app, $argv[1]);
+} else {
+    $ec2host = new ec2host($app);
 }
 
 /*
- * Get instances and output them.
+ * Output result of ec2host
  */
-while ($instance = $ec2->getNext()) {
+foreach ($ec2host->instances as $instance) {
     if(isset($argv[1])) {
         echo $instance['dnsName']."\n";
     } else {
