@@ -36,7 +36,7 @@ ubuntu@ip-1-11-11-11:~$
 {
     "require" : {
 
-        "dominikto/ec2dns" : "dev-master"
+        "fruux/ec2dns" : "dev-master"
 
     },
     "config" : {

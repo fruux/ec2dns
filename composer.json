@@ -1,8 +1,9 @@
 {
-    "name": "dominikto/ec2dns",
+    "name": "fruux/ec2dns",
+    "replace": { "dominikto/ec2dns": "self.version" },
     "description": "ec2dns is a set of command line tools that makes it easy to display public hostnames of EC2 instances and ssh into them via their tag name.",
     "keywords" : [ "aws", "ec2", "host", "dns", "hostname", "tags", "ssh" ],
-    "homepage" : "https://github.com/dominikto/ec2dns",
+    "homepage" : "https://github.com/fruux/ec2dns",
     "license" : "BSD-3-Clause",
     "require": {
         "php":">=5.2.0",
