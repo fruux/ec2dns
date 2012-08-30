@@ -12,9 +12,13 @@ i-87654321: appserver-2    ec1-11-11-11-11.compute-1.amazonaws.com
 $ ec2host appserver-1
 ec9-99-99-99-99.compute-1.amazonaws.com
 
-$ ec2host ssh ubuntu@`ec2host appserver-1`
+$ ssh ubuntu@`ec2host appserver-1`
 i-12345678: appserver-1    ec9-99-99-99-99.compute-1.amazonaws.com
 ubuntu@ip-9-99-99-99:~$ 
+
+$ ec2ssh appserver-2
+i-12345678: appserver-1    ec1-11-11-11-11.compute-1.amazonaws.com
+ubuntu@ip-1-11-11-11:~$ 
 ```
 
 ## Prerequisites

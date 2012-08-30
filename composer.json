@@ -13,7 +13,7 @@
             "ec2dns" : "lib/"
         }
     },
-    "bin": ["bin/ec2host"],
+    "bin": ["bin/ec2host", "bin/ec2ssh"],
     "authors": [
         {
             "name": "Dominik Tobschall",
