@@ -21,7 +21,7 @@ foreach($paths as $path) {
 /*
  * Import namespaces
  */
-use ec2dns\ec2dns;
+use ec2dns\ec2;
 use ec2dns\ec2host;
 
 /*
@@ -34,8 +34,7 @@ if(!isset($argv[1])) {
 /*
  * Instantiate main class.
  */
-$app = new ec2dns();
-$app->setCredentials(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
+$ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
 
 /*
  * Extract user if present and set the tag.
@@ -53,7 +52,7 @@ if(strpos($argv[1], "@")) {
 /*
  * Get hostname for tag.
  */
-$ec2host = new ec2host($app, $tag);
+$ec2host = new ec2host($ec2, $tag);
 if($ec2host->instances) {
     $dnsName = $ec2host->instances[0]['dnsName'];    
 } else {
@@ -66,7 +65,10 @@ if($ec2host->instances) {
  * @todo handle ssh parameters, execution of commands via ssh and set a nice prompt with the tag name.
  */
 if($dnsName) {
-    passthru('ssh '.$user.'@'.$dnsName);
+    $arguments = array_slice($argv,2);
+    $arguments = array_map('escapeshellarg', $arguments);
+
+    passthru('ssh '.$user.'@'.$dnsName . ' ' . implode(" ", $arguments));
 } else {
     die();
 }

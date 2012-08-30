@@ -10,7 +10,7 @@ namespace ec2dns;
  */
 class ec2 {
 
-    protected $aws_ec2;
+    protected $awsEC2;
 
     protected $filters = array();
 
@@ -21,27 +21,27 @@ class ec2 {
      *
      * @param ec2dns $app
      */
-    public function __construct($app) {
+    public function __construct($awsKey, $awsSecret) {
 
-        $this->initEC2($app->aws_key, $app->aws_secret);
+        $this->initEC2($awsKey, $awsSecret);
         
     }
 
     /**
      * Sets up the \AmazonEC2 instance.
      *
-     * @param string $aws_key
-     * @param string $aws_secret
+     * @param string $awsKey
+     * @param string $awsSecret
      * @return void
      */
-    private function initEC2($aws_key, $aws_secret) {
+    private function initEC2($awsKey, $awsSecret) {
 
-        if(!empty($aws_key) && !empty($aws_secret)) {
+        if(!empty($awsKey) && !empty($awsSecret)) {
 
-            $this->aws_ec2 = new \AmazonEC2(
+            $this->awsEC2 = new \AmazonEC2(
                 array(
-                    'key' => $aws_key,
-                    'secret' => $aws_secret
+                    'key' => $awsKey,
+                    'secret' => $awsSecret
                 )
             );
 
@@ -73,7 +73,7 @@ class ec2 {
      */
     private function getInstances() {
 
-        $instances = $this->aws_ec2->describe_instances(array(
+        $instances = $this->awsEC2->describe_instances(array(
             'Filter' => $this->filters
         ));
 
