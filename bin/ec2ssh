@@ -28,7 +28,7 @@ use ec2dns\ec2host;
  * Die if tag name parameter is not set
  */
 if(!isset($argv[1])) {
-    die('No tag name given!');
+    die('No tag name given!\n');
 }
 
 /*
@@ -62,7 +62,7 @@ if($ec2host->instances) {
 /*
  * Start SSH session
  * 
- * @todo handle ssh parameters, execution of commands via ssh and set a nice prompt with the tag name.
+ * @todo set a nice prompt with the tag name.
  */
 if($dnsName) {
     $arguments = array_slice($argv,2);
