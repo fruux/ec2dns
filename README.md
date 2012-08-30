@@ -12,7 +12,7 @@ ec2dns is a set of command line tools that makes it easy to display public hostn
 $ ec2host
 i-12345678: appserver-1    ec9-99-99-99-99.compute-1.amazonaws.com
 i-87654321: appserver-2    ec1-11-11-11-11.compute-1.amazonaws.com
-$ 
+$
 ```
 
 #### Get the hostname of an ec2 instance by its name tag
@@ -20,7 +20,7 @@ $
 ```
 $ ec2host appserver-1
 ec9-99-99-99-99.compute-1.amazonaws.com
-$ 
+$
 ```
 
 #### combine ec2host with other commands by using backticks
@@ -39,7 +39,7 @@ owners.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-mysql> 
+mysql>
 ```
 
 ### ec2ssh
@@ -49,19 +49,18 @@ mysql>
 ```
 $ ec2ssh appserver-2
 ubuntu@ip-1-11-11-11:~$
-
 ```
 
-#### ssh into an instance via its name tag and execute a command
+#### ssh into an instance via its name tag and execute commands
 
 ```
 $ ec2ssh appserver-1 uptime
  13:09:10 up 1 day, 14:23,  0 users,  load average: 0.35, 0.36, 0.35
-$ 
+$
 
 $ ec2ssh appserver-1 'uname -a'
  Linux ip-10-140-78-75 3.2.0-23-virtual #36-Ubuntu SMP Tue Apr 10 22:29:03 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
-$ 
+$
 ```
 
 ## Prerequisites
