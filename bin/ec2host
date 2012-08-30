@@ -1,6 +1,13 @@
 #!/usr/bin/php
 <?php
 
+/**
+ * ec2host
+ *
+ * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
+ * @author Dominik Tobschall (http://fruux.com/)
+ */
+
 /*
  * Find the Composer autoloader.
  * Credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
