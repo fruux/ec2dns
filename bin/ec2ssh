@@ -65,7 +65,10 @@ if($ec2host->instances) {
  * @todo handle ssh parameters, execution of commands via ssh and set a nice prompt with the tag name.
  */
 if($dnsName) {
-    passthru('ssh '.$user.'@'.$dnsName);
+    $arguments = array_slice($argv,2);
+    $arguments = array_map('escapeshellarg', $arguments);
+
+    passthru('ssh '.$user.'@'.$dnsName . ' ' . implode(" ", $arguments));
 } else {
     die();
 }
