@@ -1,7 +1,7 @@
 {
     "name": "dominikto/ec2dns",
     "description": "ec2dns is a set of command line tools that makes it easy to display public hostnames of EC2 instances and ssh into them via their tag name.",
-    "keywords" : [ "aws", "ec2", "host", "dns", "hostname", "tags" ],
+    "keywords" : [ "aws", "ec2", "host", "dns", "hostname", "tags", "ssh" ],
     "homepage" : "https://github.com/dominikto/ec2dns",
     "license" : "BSD-3-Clause",
     "require": {

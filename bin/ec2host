@@ -30,8 +30,6 @@ use ec2dns\ec2host\ec2host;
 $app = new ec2dns();
 $app->setCredentials(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
 
-
-
 /*
  * Run ec2host
  */
