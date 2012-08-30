@@ -1,6 +1,6 @@
 # ec2dns
 
-ec2dns is a command line tool that displays public hostnames of your EC2 instances.
+ec2dns is a command line tool that displays public hostnames of [EC2](http://aws.amazon.com/ec2/) instances.
 
 ## Usage
 
@@ -19,7 +19,7 @@ ubuntu@ip-9-99-99-99:~$
 
 ## Prerequisites
 
-* Obviously an AWS account and at least one running EC2 instance.
+* Obviously an [AWS](http://aws.amazon.com) account and at least one running EC2 instance.
 * Correctly set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables.
 * You need [Composer](http://getcomposer.org) to install the dependencies - you should install it globally, as described [here](http://getcomposer.org/doc/00-intro.md#globally).
 * You should have a `~/bin` directory and it should be included in your `PATH` environment variable.

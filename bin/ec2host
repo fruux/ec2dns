@@ -1,9 +1,10 @@
 #!/usr/bin/php
 <?php
 
-// This sucks.. we have to try to find the composer autoloader. But chances
-// are, we can't find it this way. So we'll do our bestest
-// credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
+/*
+ * Find the Composer autoloader.
+ * Credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
+ */
 
 $paths = array(
     __DIR__ . '/../vendor/autoload.php',  // In case the project is cloned directly
@@ -12,65 +13,45 @@ $paths = array(
 
 foreach($paths as $path) {
     if (file_exists($path)) {
-        include $path;
+        include($path);
         break;
     }
 }
 
-$key = getenv('AWS_ACCESS_KEY_ID');
-$secret = getenv('AWS_SECRET_ACCESS_KEY');
+/*
+ * Import namespaces
+ */
+use \ec2dns\ec2dns\ec2dns;
+use \ec2dns\ec2\ec2;
 
-if(empty($key) || empty($secret)) {
-    die("Error: AWS_ACCESS_KEY_ID and/or AWS_SECRET_ACCESS_KEY ENV variables are not set!\n");
-} 
+/*
+ * Instantiate classes.
+ */
+$app = new ec2dns();
+$app->setCredentials(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
 
-$ec2 = new \AmazonEC2(
-    array(
-        'key' => $key,
-        'secret' => $secret
-    )
-);
+$ec2 = new ec2($app);
 
-$filters = array();
-array_push($filters, array('Name' => 'instance-state-name', 'Value' => 'running'));
+/*
+ * Set filters.
+ * We are only interested in running instances.
+ */
+$ec2->addFilter('instance-state-name', 'running');
 
+/*
+ * Additionally filter by tag, if one was set via the cli parameter.
+ */
 if(isset($argv[1])) {
-    array_push($filters, array('Name' => 'tag:Name', 'Value' => $argv[1]));
+    $ec2->addFilter('tag:Name', $argv[1]);
 }
 
-$instances = $ec2->describe_instances(array(
-    'Filter' => $filters
-));
-
-
-if (!$instances->isOK()) {
-    die("Error: Request failed!\n");
-}
-
-foreach ($instances->body->reservationSet->item as $instance) {
-    $tag = false;
-    $instanceId = false;
-    $dnsName = false;
-
-    foreach($instance->instancesSet->item->tagSet->item as $tag) {
-        if($tag->key == 'Name' && !empty($tag->value)) {
-            $tag = $tag->value;
-            break;
-        } else {
-            $tag = false;
-        }
-    }
-
-    $instanceId = $instance->instancesSet->item->instanceId;
-    $dnsName = $instance->instancesSet->item->dnsName;
-
+/*
+ * Get instances and output them.
+ */
+while ($instance = $ec2->getNext()) {
     if(isset($argv[1])) {
-        echo $dnsName."\n";
+        echo $instance['dnsName']."\n";
     } else {
-        if($tag) {
-            echo $instanceId.": ".$tag."\t".$dnsName."\n";
-        } else {
-            echo $instanceId.": [EMPTY NAME TAG]\t".$dnsName."\n";
-        }
+        echo $instance['instanceId'].": ".$instance['tag']."\t".$instance['dnsName']."\n";
     }
 }
