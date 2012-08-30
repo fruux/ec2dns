@@ -56,5 +56,11 @@ cd ~/bin
 composer update
 ```
 
+## Roadmap
+
+* Correct handling of ssh parameters for `ec2ssh`.
+* Set a nice prompt with the tag name when sshing into a machine via `ec2ssh appserver-1`.
+* A cli tool (`ec2dns`) that updates /etc/hosts with the current public hostnames of all ec2 instances.
+
 ## Credits
 ec2dns is inspired by [ec2-ssh](http://github.com/Instagram/ec2-ssh) and powered by [aws-sdk-for-php](http://github.com/amazonwebservices/aws-sdk-for-php).
