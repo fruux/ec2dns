@@ -28,7 +28,8 @@ use ec2dns\ec2host;
  * Die if tag name parameter is not set
  */
 if(!isset($argv[1])) {
-    die('No tag name given!\n');
+    fwrite(STDERR, "No tag name given!\n");
+    die();
 }
 
 /*
