@@ -1,6 +1,6 @@
 # ec2dns
 
-ec2dns is a command line tool that displays public hostnames of [EC2](http://aws.amazon.com/ec2/) instances.
+ec2dns is a set of command line tools that makes it easy to display public hostnames of [EC2](http://aws.amazon.com/ec2/) instances and ssh into them via their tag name.
 
 ## Usage
 
