@@ -115,7 +115,7 @@ composer update
 
 ## Contributing
 
-Please submit all pull requests against the master. Code accompanied with phpunit tests is highly appreciated. Thanks!
+Please submit all pull requests against the master branch. Code accompanied with phpunit tests is highly appreciated. Thanks!
 
 ## Acknowledgements
 
