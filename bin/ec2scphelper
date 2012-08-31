@@ -1,0 +1,70 @@
+#!/usr/bin/php
+<?php
+
+/**
+ * ec2scphelper
+ *
+ * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
+ * @author Dominik Tobschall (http://fruux.com/)
+ */
+
+/*
+ * Find the Composer autoloader.
+ * Credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
+ */
+
+$paths = array(
+    __DIR__ . '/../vendor/autoload.php',  // In case the project is cloned directly
+    __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
+);
+
+foreach($paths as $path) {
+    if (file_exists($path)) {
+        include($path);
+        break;
+    }
+}
+
+/*
+ * Die if parameter is not set
+ */
+if(!isset($argv[1])) {
+    fwrite(STDERR, "Nothing to do here!\n");
+    die();
+}
+
+/*
+ * Import namespaces
+ */
+use ec2dns\ec2;
+use ec2dns\ec2host;
+
+/*
+ * Instantiate main class.
+ */
+$ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
+
+/*
+ * Replace known tags with hostnames
+ * (This needs optimization!)
+ */
+$ec2host = new ec2host($ec2);
+if($ec2host->instances) {
+
+    $arguments = array_slice($argv,1);
+    foreach ($arguments as $argumentKey => $argumentValue) {
+
+        foreach ($ec2host->instances as $instance) {
+            $argumentValue = str_replace($instance['tag'].":", $instance['dnsName'].":", $argumentValue);
+        }
+
+        $arguments[$argumentKey] = $argumentValue;
+
+    }
+
+}
+
+/*
+ * Return processed scp arguments
+ */
+echo(implode(' ', $arguments)."\n");

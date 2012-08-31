@@ -1,64 +1,33 @@
-#!/usr/bin/php
-<?php
+#!/bin/bash
 
-/**
- * ec2scp
- *
- * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
- * @author Dominik Tobschall (http://fruux.com/)
- */
+ # ec2scp
+ #
+ # @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
+ # @author Dominik Tobschall (http://fruux.com/)
 
-/*
- * Find the Composer autoloader.
- * Credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
- */
+ #
+ # Find script path
+ # 
+SOURCE="${BASH_SOURCE[0]}"
+DIR="$( dirname "$SOURCE" )"
+while [ -h "$SOURCE" ]
+do 
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+  DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd )"
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-$paths = array(
-    __DIR__ . '/../vendor/autoload.php',  // In case the project is cloned directly
-    __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
-);
+ #
+ # Hand arguments to ec2scphelper if we have any
+ #
+if [ "$#" -ge 1 ]; then
+    scpArguments=$($DIR/ec2scphelper $@)
+else 
+    scpArguments=""
+fi 
 
-foreach($paths as $path) {
-    if (file_exists($path)) {
-        include($path);
-        break;
-    }
-}
-
-/*
- * Import namespaces
- */
-use ec2dns\ec2;
-use ec2dns\ec2host;
-
-/*
- * Instantiate main class.
- */
-$ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
-
-/*
- * Replace known tags with hostnames
- * (This needs optimization!)
- */
-$ec2host = new ec2host($ec2);
-if($ec2host->instances) {
-
-    $arguments = array_slice($argv,1);
-    foreach ($arguments as $argumentKey => $argumentValue) {
-
-        foreach ($ec2host->instances as $instance) {
-            $argumentValue = str_replace($instance['tag'].":", $instance['dnsName'].":", $argumentValue);
-        }
-
-        $arguments[$argumentKey] = $argumentValue;
-
-    }
-
-}
-
-$arguments = array_map('escapeshellarg', $arguments);
-
-/*
- * Start SCP session
- */
-passthru('scp ' . implode(' ', $arguments));
+ #
+ # run scp
+ #
+scp $scpArguments
