@@ -63,6 +63,16 @@ $ ec2ssh appserver-1 'uname -a'
 $
 ```
 
+### ec2scp
+
+### copy a file from an ec2 instance onto your machine
+
+```
+$ ec2scp ubuntu@appserver-1:/etc/nginx/nginx.conf .
+nginx.conf                                                                           100%  221     0.2KB/s   00:00
+$
+```
+
 ## Prerequisites
 
 * Obviously an [AWS](http://aws.amazon.com) account and at least one running EC2 instance.
@@ -102,6 +112,10 @@ composer update
 
 * Set a nice prompt with the tag name when sshing into a machine via `ec2ssh appserver-1`.
 * A cli tool (`ec2dns`) that updates `/etc/hosts` with the current public hostnames of all ec2 instances.
+
+## Contributing
+
+Please submit all pull requests against the master. Code accompanied with phpunit tests is highly appreciated. Thanks!
 
 ## Acknowledgements
 
