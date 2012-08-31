@@ -80,4 +80,3 @@ if($dnsName) {
 } else {
     die();
 }
-    
