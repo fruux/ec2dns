@@ -14,11 +14,10 @@
             "ec2dns" : "lib/"
         }
     },
-    "bin": ["bin/ec2host", "bin/ec2ssh", "bin/ec2scp", "bin/ec2scphelper"],
+    "bin": ["bin/ec2dns", "bin/ec2host", "bin/ec2ssh", "bin/ec2scp", "bin/ec2scphelper"],
     "authors": [
         {
-            "name": "Dominik Tobschall",
-            "email": "dtobschall@gmail.com"
+            "name": "Dominik Tobschall"
         }
     ]
 }

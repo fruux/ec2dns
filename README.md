@@ -73,6 +73,21 @@ nginx.conf                                                                      
 $
 ```
 
+### ec2dns
+
+#### update /etc/hosts with your ec2 instances
+
+```
+$ sudo -E ec2dns
+Updated/Added 2 hosts.
+```
+
+Your machine is now able to resolve your ec2 instances by tags directly, so for example the following will just work
+
+```
+$ ping appserver-1
+```
+
 ## Prerequisites
 
 * Obviously an [AWS](http://aws.amazon.com) account and at least one running EC2 instance.
