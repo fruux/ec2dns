@@ -34,7 +34,12 @@ use ec2dns\ec2host;
 /*
  * Instantiate main class.
  */
-$ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
+try {
+    $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
+} catch(Exception $e) {
+    fwrite(STDERR, "Didn't find AWS environment variables.\n");
+    die();
+}
 
 /*
  * Run ec2host

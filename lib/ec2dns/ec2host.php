@@ -19,7 +19,7 @@ class ec2host {
 
     protected $instanceTag;
 
-    protected $emptyTag = "[No 'Name' tag]";
+    public $emptyTag = "[No 'Name' tag]";
 
     public $instances = array();
 
