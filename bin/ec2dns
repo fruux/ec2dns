@@ -133,4 +133,11 @@ if(!$hostsHandle) {
 fwrite($hostsHandle, $hosts);
 fclose($hostsHandle);
 
-fwrite(STDERR, "Updated/Added ".$entries." hosts.\n");
+/*
+ * Provide feedback
+ */
+if($existingEntries > 0) {
+    fwrite(STDOUT, "Updated ".$entries." hosts.\n");
+} else {
+    fwrite(STDOUT, "Added ".$entries." hosts.\n");
+}
