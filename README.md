@@ -65,7 +65,7 @@ $
 
 ### ec2scp
 
-### copy a file from an ec2 instance onto your machine
+#### copy a file from an ec2 instance onto your machine
 
 ```
 $ ec2scp ubuntu@appserver-1:/etc/nginx/nginx.conf .
