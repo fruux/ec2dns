@@ -137,7 +137,7 @@ fclose($hostsHandle);
  * Provide feedback
  */
 if($existingEntries > 0) {
-    fwrite(STDOUT, "Updated ".$entries." hosts.\n");
+    echo "Updated ".$entries." hosts.\n";
 } else {
-    fwrite(STDOUT, "Added ".$entries." hosts.\n");
+    echo "Added ".$entries." hosts.\n";
 }
