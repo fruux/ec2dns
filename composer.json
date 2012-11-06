@@ -7,14 +7,14 @@
     "license" : "BSD-3-Clause",
     "require": {
         "php":">=5.2.0",
-        "amazonwebservices/aws-sdk-for-php": "1.5.14"
+        "amazonwebservices/aws-sdk-for-php": "1.5.15"
     },
     "autoload" : {
         "psr-0" : {
             "ec2dns" : "lib/"
         }
     },
-    "bin": ["bin/ec2dns", "bin/ec2host", "bin/ec2ssh", "bin/ec2scp", "bin/ec2scphelper"],
+    "bin": ["bin/ec2dns", "bin/ec2host", "bin/ec2ssh", "bin/ec2scp", "bin/ec2dnshelper"],
     "authors": [
         {
             "name": "Dominik Tobschall"
