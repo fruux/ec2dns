@@ -7,11 +7,11 @@
 
  #
  # Find script path
- # 
+ #
 SOURCE="${BASH_SOURCE[0]}"
 DIR="$( dirname "$SOURCE" )"
 while [ -h "$SOURCE" ]
-do 
+do
   SOURCE="$(readlink "$SOURCE")"
   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
   DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd )"
@@ -23,9 +23,9 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
  #
 if [ "$#" -ge 1 ]; then
     scpArguments=$($DIR/ec2scphelper $@)
-else 
+else
     scpArguments=""
-fi 
+fi
 
  #
  # run scp
