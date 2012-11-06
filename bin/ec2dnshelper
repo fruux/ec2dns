@@ -2,7 +2,7 @@
 <?php
 
 /**
- * ec2scphelper
+ * ec2dnshelper
  *
  * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
  * @author Dominik Tobschall (http://fruux.com/)
@@ -59,17 +59,27 @@ if($ec2host->instances) {
     $arguments = array_slice($argv,1);
     foreach ($arguments as $argumentKey => $argumentValue) {
 
-        foreach ($ec2host->instances as $instance) {
-            $argumentValue = str_replace($instance['tag'].":", $instance['dnsName'].":", $argumentValue);
+        if (strpos($argumentValue, '-', 0) === 0 || strpos($argumentValue, '--', 0) === 0) {
+            continue;
         }
 
-        $arguments[$argumentKey] = $argumentValue;
+        foreach ($ec2host->instances as $instance) {
+
+            if ($instance['tag']==$ec2host->emptyTag) break;
+
+            $newArgumentValue = preg_replace('/(^.*@?)('.$instance['tag'].')(:?.*$)/i', '$1'.$instance['dnsName'].'$3', $argumentValue);
+            if($newArgumentValue!=$argumentValue) {
+                $arguments[$argumentKey] = $newArgumentValue;
+                break;
+            }
+
+        }
 
     }
 
 }
 
 /*
- * Return processed scp arguments
+ * Return processed arguments
  */
 echo(implode(' ', $arguments)."\n");

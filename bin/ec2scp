@@ -19,10 +19,10 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
  #
- # Hand arguments to ec2scphelper if we have any
+ # Hand arguments to ec2dnshelper if we have any
  #
 if [ "$#" -ge 1 ]; then
-    scpArguments=$($DIR/ec2scphelper $@)
+    scpArguments=$($DIR/ec2dnshelper $@)
 else
     scpArguments=""
 fi
