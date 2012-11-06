@@ -7,11 +7,11 @@
 
  #
  # Find script path
- # 
+ #
 SOURCE="${BASH_SOURCE[0]}"
 DIR="$( dirname "$SOURCE" )"
 while [ -h "$SOURCE" ]
-do 
+do
   SOURCE="$(readlink "$SOURCE")"
   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
   DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd )"
@@ -19,13 +19,13 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
  #
- # Hand arguments to ec2scphelper if we have any
+ # Hand arguments to ec2dnshelper if we have any
  #
 if [ "$#" -ge 1 ]; then
-    scpArguments=$($DIR/ec2scphelper $@)
-else 
+    scpArguments=$($DIR/ec2dnshelper $@)
+else
     scpArguments=""
-fi 
+fi
 
  #
  # run scp

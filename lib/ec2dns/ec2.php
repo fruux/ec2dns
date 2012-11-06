@@ -24,7 +24,7 @@ class ec2 {
     public function __construct($awsKey, $awsSecret) {
 
         $this->initEC2($awsKey, $awsSecret);
-        
+
     }
 
     /**
