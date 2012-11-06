@@ -1,87 +1,33 @@
-#!/usr/bin/php
-<?php
+#!/bin/bash
 
-/**
- * ec2ssh
- *
- * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
- * @author Dominik Tobschall (http://fruux.com/)
- */
+ # ec2ssh
+ #
+ # @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
+ # @author Dominik Tobschall (http://fruux.com/)
 
-/*
- * Find the Composer autoloader.
- * Credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
- */
+ #
+ # Find script path
+ #
+SOURCE="${BASH_SOURCE[0]}"
+DIR="$( dirname "$SOURCE" )"
+while [ -h "$SOURCE" ]
+do
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+  DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd )"
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-$paths = array(
-    __DIR__ . '/../vendor/autoload.php',  // In case the project is cloned directly
-    __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
-);
+ #
+ # Hand arguments to ec2dnshelper if we have any
+ #
+if [ "$#" -ge 1 ]; then
+    sshArguments=$($DIR/ec2dnshelper $@)
+else
+    sshArguments=""
+fi
 
-foreach($paths as $path) {
-    if (file_exists($path)) {
-        include($path);
-        break;
-    }
-}
-
-/*
- * Import namespaces
- */
-use ec2dns\ec2;
-use ec2dns\ec2host;
-
-/*
- * Die if tag name parameter is not set
- */
-if(!isset($argv[1])) {
-    fwrite(STDERR, "No tag name given!\n");
-    die();
-}
-
-/*
- * Instantiate main class.
- */
-try {
-    $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
-} catch(Exception $e) {
-    fwrite(STDERR, "Didn't find AWS environment variables.\n");
-    die();
-}
-
-/*
- * Extract user if present and set the tag.
- */
-$user = "";
-if(strpos($argv[1], "@")) {
-    $parameter = explode("@", $argv[1]);
-    $user = $parameter[0];
-    $tag = $parameter[1];
-} else {
-    $user = "ubuntu";
-    $tag = $argv[1];
-}
-
-/*
- * Get hostname for tag.
- */
-$ec2host = new ec2host($ec2, $tag);
-if($ec2host->instances) {
-    $dnsName = $ec2host->instances[0]['dnsName'];    
-} else {
-    die();
-}
-
-/*
- * Start SSH session
- * 
- * @todo set a nice prompt with the tag name.
- */
-if($dnsName) {
-    $arguments = array_slice($argv,2);
-    $arguments = array_map('escapeshellarg', $arguments);
-
-    passthru('ssh '.$user.'@'.$dnsName . ' ' . implode(" ", $arguments));
-} else {
-    die();
-}
+ #
+ # run ssh
+ #
+ssh $sshArguments
