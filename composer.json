@@ -7,7 +7,7 @@
     "license" : "BSD-3-Clause",
     "require": {
         "php":">=5.2.0",
-        "amazonwebservices/aws-sdk-for-php": "1.5.15",
+        "amazonwebservices/aws-sdk-for-php": "1.5.17.1",
         "hoa/dns": "*",
         "hoa/socket": "*"
     },
