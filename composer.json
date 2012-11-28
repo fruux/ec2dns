@@ -2,19 +2,22 @@
     "name": "fruux/ec2dns",
     "replace": { "dominikto/ec2dns": "self.version" },
     "description": "ec2dns is a set of command line tools that makes it easy to display public hostnames of EC2 instances and ssh into them via their tag name.",
-    "keywords" : [ "aws", "ec2", "host", "dns", "hostname", "tags", "ssh", "scp" ],
+    "keywords" : [ "aws", "ec2", "host", "dns", "server", "hostname", "tags", "ssh", "scp" ],
     "homepage" : "https://github.com/fruux/ec2dns",
     "license" : "BSD-3-Clause",
     "require": {
         "php":">=5.2.0",
-        "amazonwebservices/aws-sdk-for-php": "1.5.15"
+        "amazonwebservices/aws-sdk-for-php": "1.5.15",
+        "hoa/dns": "*",
+        "hoa/socket": "*"
     },
+    "minimum-stability": "dev",
     "autoload" : {
         "psr-0" : {
             "ec2dns" : "lib/"
         }
     },
-    "bin": ["bin/ec2dns", "bin/ec2host", "bin/ec2ssh", "bin/ec2scp", "bin/ec2dnshelper"],
+    "bin": ["bin/ec2dns", "bin/ec2dnsserver", "bin/ec2host", "bin/ec2ssh", "bin/ec2scp", "bin/ec2dnshelper"],
     "authors": [
         {
             "name": "Dominik Tobschall"

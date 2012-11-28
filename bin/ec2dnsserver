@@ -1,0 +1,66 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * ec2dnsserver
+ *
+ * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
+ * @author Dominik Tobschall (http://fruux.com/)
+ */
+
+/*
+ * Find the Composer autoloader.
+ * Credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
+ */
+
+$paths = array(
+    __DIR__ . '/../vendor/autoload.php',  // In case the project is cloned directly
+    __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
+);
+
+foreach($paths as $path) {
+    if (file_exists($path)) {
+        include($path);
+        break;
+    }
+}
+
+/*
+ * Import namespaces
+ */
+use ec2dns\ec2;
+use ec2dns\ec2host;
+
+/*
+ * Instantiate main class.
+ */
+try {
+    $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
+} catch(Exception $e) {
+    fwrite(STDERR, "Didn't find AWS environment variables.\n");
+    die();
+}
+
+/*
+ * DNS
+ */
+from('Hoa')->import('Socket.Server')->import('Dns.~');
+
+$dns = new \Hoa\Dns(
+    new \Hoa\Socket\Server('udp://127.0.0.1:53')
+);
+$dns->on('query', function ( \Hoa\Core\Event\Bucket $bucket ) use ($ec2) {
+
+    $data = $bucket->getData();
+    $ec2host = new ec2host(clone $ec2, $data['domain']);
+
+    if($ec2host->instances) {
+        echo "Resolved ".$data['domain']." via ec2host.\n";
+        return gethostbyname($ec2host->instances[0]['dnsName']);;
+    } else {
+        echo "Could not resolve ".$data['domain']." via ec2host.\n";
+        return false;
+    }
+
+});
+$dns->run();
