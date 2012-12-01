@@ -71,7 +71,7 @@ foreach ($hosts as $hostsLine => $hostsValue) {
              * remove existing entries
              */
             $existingEntries = $matches[3][0];
-            for ($i=0; $i <= $existingEntries+1 ; $i++) { 
+            for ($i=0; $i <= $existingEntries+1 ; $i++) {
                 unset($hosts[$hostsLine+$i]);
             }
             $hosts = array_values($hosts);
@@ -105,9 +105,9 @@ array_splice($newHosts, 0, 0, $header);
  * add new entries to /etc/hosts
  */
 if($existingEntries > 0) {
-    
+
     array_splice($hosts, $hostsLine, 0, $newHosts);
-    
+
 } else {
 
     foreach ($newHosts as $newHost) {
