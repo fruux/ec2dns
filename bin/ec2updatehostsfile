@@ -1,0 +1,143 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * ec2updatehostsfile
+ *
+ * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
+ * @author Dominik Tobschall (http://fruux.com/)
+ */
+
+/*
+ * Find the Composer autoloader.
+ * Credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
+ */
+
+$paths = array(
+    __DIR__ . '/../vendor/autoload.php',  // In case the project is cloned directly
+    __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
+);
+
+foreach($paths as $path) {
+    if (file_exists($path)) {
+        include($path);
+        break;
+    }
+}
+
+/*
+ * Import namespaces
+ */
+use ec2dns\ec2;
+use ec2dns\ec2host;
+
+/*
+ * Instantiate main class.
+ */
+try {
+    $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
+} catch(Exception $e) {
+    fwrite(STDERR, "Didn't find AWS environment variables.\n");
+    die();
+}
+
+/*
+ * read /etc/hosts
+ */
+if(!$hosts = file("/etc/hosts")) {
+    fwrite(STDERR, "Could not read /etc/hosts.\n");
+    die();
+}
+
+/*
+ * Run ec2host
+ */
+$ec2host = new ec2host($ec2);
+
+/*
+ * check for existing entries
+ */
+$existingEntries = 0;
+foreach ($hosts as $hostsLine => $hostsValue) {
+    if($hostsValue=="## ec2dns\n") {
+        if(!preg_match_all("/(#)(\\s+)(\\d+)(\\s+)(hosts)(\n)/is", $hosts[$hostsLine+1], $matches)) {
+
+            fwrite(STDERR, "Found ec2dns marker in /etc/hosts, but something seems to be wrong.\nProbably you manually changed the records.\nPlease remove them manually before running this tool again.\n");
+            die();
+
+        } else {
+
+            /*
+             * remove existing entries
+             */
+            $existingEntries = $matches[3][0];
+            for ($i=0; $i <= $existingEntries+1 ; $i++) {
+                unset($hosts[$hostsLine+$i]);
+            }
+            $hosts = array_values($hosts);
+            break;
+
+        }
+    }
+}
+
+/*
+ * get data for new entries
+ */
+$newHosts = array();
+$entries = 0;
+
+foreach ($ec2host->instances as $instance) {
+    if($instance['tag']!=$ec2host->emptyTag) {
+        array_push($newHosts, gethostbyname($instance['dnsName'])." ".$instance['tag']."\n");
+        $entries++;
+    }
+}
+
+$header = array(
+        "## ec2dns\n",
+        "# ".$entries." hosts\n"
+);
+
+array_splice($newHosts, 0, 0, $header);
+
+/*
+ * add new entries to /etc/hosts
+ */
+if($existingEntries > 0) {
+
+    array_splice($hosts, $hostsLine, 0, $newHosts);
+
+} else {
+
+    foreach ($newHosts as $newHost) {
+        array_push($hosts, $newHost);
+    }
+
+}
+$hosts = implode("", $hosts);
+
+/*
+ * Check if we have write access to /etc/hosts
+ */
+$hostsHandle = @fopen("/etc/hosts", "w");
+
+if(!$hostsHandle) {
+    fwrite(STDERR, "No write permissions for /etc/hosts. You have to run this tool like this: 'sudo -E ".$argv[0]."'.\n");
+    die();
+}
+
+/*
+ * save /etc/hosts
+ */
+fwrite($hostsHandle, $hosts);
+fclose($hostsHandle);
+
+/*
+ * Provide feedback
+ */
+if($existingEntries > 0) {
+    echo "Updated ".$entries." hosts.\n";
+} else {
+    echo "Added ".$entries." hosts.\n";
+}

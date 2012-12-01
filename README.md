@@ -73,12 +73,12 @@ nginx.conf                                                                      
 $
 ```
 
-### ec2dns
+### ec2updatehostsfile
 
 #### update /etc/hosts with your ec2 instances
 
 ```
-$ sudo -E ec2dns
+$ sudo -E ec2updatehostsfile
 Updated/Added 2 hosts.
 ```
 
