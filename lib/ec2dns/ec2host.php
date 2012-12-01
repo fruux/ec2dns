@@ -40,7 +40,7 @@ class ec2host {
     }
 
     /**
-     * This method initializes the filters in the instance of ec2dns\ec2\ec2.
+     * This method initializes the filters in the instance of ec2dns\ec2.
      *
      * @return void
      */
@@ -54,7 +54,7 @@ class ec2host {
     }
 
      /**
-     * This method executes the request via the instance of ec2dns\ec2\ec2
+     * This method executes the request via the instance of ec2dns\ec2
      * and stores the result in the class.
      *
      * @return void
