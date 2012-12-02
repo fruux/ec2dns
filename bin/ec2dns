@@ -29,7 +29,7 @@ foreach($paths as $path) {
  * Import namespaces
  */
 use ec2dns\ec2;
-use ec2dns\ec2host;
+use ec2dns\ec2dns;
 
 /*
  * Instantiate main class.
@@ -42,25 +42,7 @@ try {
 }
 
 /*
- * DNS
+ * Instantiate ec2dns
  */
-from('Hoa')->import('Socket.Server')->import('Dns.~');
-
-$dns = new \Hoa\Dns(
-    new \Hoa\Socket\Server('udp://127.0.0.1:54')
-);
-$dns->on('query', function ( \Hoa\Core\Event\Bucket $bucket ) use ($ec2) {
-
-    $data = $bucket->getData();
-    $ec2host = new ec2host(clone $ec2, $data['domain']);
-
-    if($ec2host->instances) {
-        echo "Resolved ".$data['domain']." via ec2host.\n";
-        return gethostbyname($ec2host->instances[0]['dnsName']);;
-    } else {
-        echo "Could not resolve ".$data['domain']." via ec2host.\n";
-        return false;
-    }
-
-});
-$dns->run();
+$ec2dns = new ec2dns($ec2);
+$ec2dns->run();
