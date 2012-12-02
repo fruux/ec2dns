@@ -2,7 +2,6 @@
 
 namespace ec2dns;
 
-use ec2dns\ec2dns;
 use ec2dns\ec2;
 
 /**
@@ -15,8 +14,6 @@ class ec2host {
 
     protected $ec2;
 
-    protected $app;
-
     protected $instanceTag;
 
     public $emptyTag = "[No 'Name' tag]";
@@ -26,7 +23,7 @@ class ec2host {
     /**
      * Creates the class.
      *
-     * @param ec2dns $app
+     * @param ec2 $ec2
      * @param string $instanceTag
      */
     public function __construct(ec2 $ec2, $instanceTag = false) {
