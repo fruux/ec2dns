@@ -47,7 +47,7 @@ class ec2 {
                 )
             );
 
-            if(!$region) {
+            if(empty($region)) {
                 $this->awsEC2->set_region($this->defaultRegion);
             } else {
                 $this->awsEC2->set_region($this->getRegionByUrl($region));
