@@ -35,9 +35,9 @@ use ec2dns\ec2dns;
  * Instantiate main class.
  */
 try {
-    $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'));
+    $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'), getenv('EC2_URL'));
 } catch(Exception $e) {
-    fwrite(STDERR, "Didn't find AWS environment variables.\n");
+    fwrite(STDERR, $e->getMessage()."\n");
     die();
 }
 
