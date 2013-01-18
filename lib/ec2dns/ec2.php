@@ -16,14 +16,16 @@ class ec2 {
 
     protected $instances = array();
 
+    protected $defaultRegion = \AmazonEC2::REGION_US_E1;
+
     /**
      * Creates the class.
      *
      * @param ec2dns $app
      */
-    public function __construct($awsKey, $awsSecret) {
+    public function __construct($awsKey, $awsSecret, $region = false) {
 
-        $this->initEC2($awsKey, $awsSecret);
+        $this->initEC2($awsKey, $awsSecret, $region);
 
     }
 
@@ -34,7 +36,7 @@ class ec2 {
      * @param string $awsSecret
      * @return void
      */
-    private function initEC2($awsKey, $awsSecret) {
+    private function initEC2($awsKey, $awsSecret, $region = false) {
 
         if(!empty($awsKey) && !empty($awsSecret)) {
 
@@ -45,11 +47,47 @@ class ec2 {
                 )
             );
 
+            if(!$region) {
+                $this->awsEC2->set_region($this->defaultRegion);
+            } else {
+                $this->awsEC2->set_region($this->getRegionByUrl($region));
+            }
+
         } else {
 
             throw new \LogicException('AWS Key or Secret are not set.');
 
         }
+
+    }
+
+    /**
+     * Returns the region constants defined in the \AmazonEC2 class
+     * for endpoint urls
+     *
+     * @param string $url
+     * @return constant
+     */
+    private function getRegionByUrl($url) {
+
+        $url = parse_url($url, \PHP_URL_HOST);
+
+         $regions = array(
+            'ec2.us-east-1.amazonaws.com' => \AmazonEC2::REGION_US_E1, // us-east-1
+            'ec2.us-west-1.amazonaws.com' => \AmazonEC2::REGION_US_W1, // us-west-1
+            'ec2.us-west-2.amazonaws.com' => \AmazonEC2::REGION_US_W2, // us-west-2
+            'ec2.eu-west-1.amazonaws.com' => \AmazonEC2::REGION_EU_W1, // eu-west-1
+            'ec2.ap-northeast-1.amazonaws.com' => \AmazonEC2::REGION_APAC_NE1, // ap-northeast-1
+            'ec2.ap-southeast-1.amazonaws.com' => \AmazonEC2::REGION_APAC_SE1, // ap-southeast-1
+            'ec2.ap-southeast-2.amazonaws.com' => \AmazonEC2::REGION_APAC_SE2, // ap-southeast-2
+            'ec2.sa-east-1.amazonaws.com' => \AmazonEC2::REGION_SA_E1 // sa-east-1
+        );
+
+        if(!isset($regions[strtolower($url)])) {
+            throw new \InvalidArgumentException('The supplied region is unknown.');
+        }
+
+        return $regions[strtolower($url)];
 
     }
 
