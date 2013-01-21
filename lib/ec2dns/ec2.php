@@ -8,8 +8,8 @@ namespace ec2dns;
  * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
  * @author Dominik Tobschall (http://fruux.com/)
  */
-class ec2 {
-
+class ec2
+{
     protected $awsEC2;
 
     protected $filters = array();
@@ -23,8 +23,8 @@ class ec2 {
      *
      * @param ec2dns $app
      */
-    public function __construct($awsKey, $awsSecret, $region = false) {
-
+    public function __construct($awsKey, $awsSecret, $region = false)
+    {
         $this->initEC2($awsKey, $awsSecret, $region);
 
     }
@@ -36,9 +36,9 @@ class ec2 {
      * @param string $awsSecret
      * @return void
      */
-    private function initEC2($awsKey, $awsSecret, $region = false) {
-
-        if(!empty($awsKey) && !empty($awsSecret)) {
+    private function initEC2($awsKey, $awsSecret, $region = false)
+    {
+        if (!empty($awsKey) && !empty($awsSecret)) {
 
             $this->awsEC2 = new \AmazonEC2(
                 array(
@@ -47,7 +47,7 @@ class ec2 {
                 )
             );
 
-            if(empty($region)) {
+            if (empty($region)) {
                 $this->awsEC2->set_region($this->defaultRegion);
             } else {
                 $this->awsEC2->set_region($this->getRegionByUrl($region));
@@ -68,8 +68,8 @@ class ec2 {
      * @param string $url
      * @return constant
      */
-    private function getRegionByUrl($url) {
-
+    private function getRegionByUrl($url)
+    {
         $url = parse_url($url, \PHP_URL_HOST);
 
          $regions = array(
@@ -83,7 +83,7 @@ class ec2 {
             'ec2.sa-east-1.amazonaws.com' => \AmazonEC2::REGION_SA_E1 // sa-east-1
         );
 
-        if(!isset($regions[strtolower($url)])) {
+        if (!isset($regions[strtolower($url)])) {
             throw new \InvalidArgumentException('The supplied region is unknown.');
         }
 
@@ -98,8 +98,8 @@ class ec2 {
      * @param string $value
      * @return void
      */
-    public function addFilter($name, $value) {
-
+    public function addFilter($name, $value)
+    {
         array_push($this->filters, array('Name' => $name, 'Value' => $value));
 
     }
@@ -109,11 +109,13 @@ class ec2 {
      *
      * @return void
      */
-    private function getInstances() {
-
-        $instances = $this->awsEC2->describe_instances(array(
-            'Filter' => $this->filters
-        ));
+    private function getInstances()
+    {
+        $instances = $this->awsEC2->describe_instances(
+            array(
+                'Filter' => $this->filters
+            )
+        );
 
         if (!$instances->isOK()) {
             throw new \RuntimeException('Request failed!');
@@ -130,21 +132,20 @@ class ec2 {
      *
      * @return array $instance
      */
-    public function getNext() {
-
-        if(!$this->instances) {
+    public function getNext()
+    {
+        if (!$this->instances) {
             $this->getInstances();
             reset($this->instances);
         }
 
         $return = each($this->instances);
 
-        if($return['value']) {
+        if ($return['value']) {
             return $return['value'];
         } else {
             return false;
         }
 
     }
-
 }

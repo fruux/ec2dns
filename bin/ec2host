@@ -18,7 +18,7 @@ $paths = array(
     __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
 );
 
-foreach($paths as $path) {
+foreach ($paths as $path) {
     if (file_exists($path)) {
         include($path);
         break;
@@ -36,7 +36,7 @@ use ec2dns\ec2host;
  */
 try {
     $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'), getenv('EC2_URL'));
-} catch(Exception $e) {
+} catch (Exception $e) {
     fwrite(STDERR, $e->getMessage()."\n");
     die();
 }
@@ -44,7 +44,7 @@ try {
 /*
  * Run ec2host
  */
-if(isset($argv[1])) {
+if (isset($argv[1])) {
     $ec2host = new ec2host($ec2, $argv[1]);
 } else {
     $ec2host = new ec2host($ec2);
@@ -54,7 +54,7 @@ if(isset($argv[1])) {
  * Output result of ec2host
  */
 foreach ($ec2host->instances as $instance) {
-    if(isset($argv[1])) {
+    if (isset($argv[1])) {
         echo $instance['dnsName']."\n";
     } else {
         echo $instance['instanceId'].": ".$instance['tag']."\t".$instance['dnsName']."\n";

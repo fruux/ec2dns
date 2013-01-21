@@ -4,6 +4,7 @@ namespace ec2dns;
 
 use ec2dns\ec2;
 use ec2dns\ec2host;
+
 from('Hoa')->import('Socket.Server')->import('Dns.~');
 
 /**
@@ -12,8 +13,8 @@ from('Hoa')->import('Socket.Server')->import('Dns.~');
  * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
  * @author Dominik Tobschall (http://fruux.com/)
  */
-class ec2dns {
-
+class ec2dns
+{
     protected $ec2;
 
     protected $dnsCache = array();
@@ -28,8 +29,8 @@ class ec2dns {
      * @param ec2 $ec2
      * @param string $instanceTag
      */
-    public function __construct(ec2 $ec2) {
-
+    public function __construct(ec2 $ec2)
+    {
         $this->ec2 = $ec2;
         $this->dns = new \Hoa\Dns(new \Hoa\Socket\Server($this->listener));
 
@@ -42,8 +43,8 @@ class ec2dns {
      *
      * @return void
      */
-    protected function setCache($type, $domain, $ip) {
-
+    protected function setCache($type, $domain, $ip)
+    {
         $this->dnsCache[md5($type.$domain)] = array('ip' => $ip, 'created' => time());
 
     }
@@ -55,10 +56,10 @@ class ec2dns {
      * @param  string $domain
      * @return false|string
      */
-    protected function getCache($type, $domain) {
-
-        if(isset($this->dnsCache[md5($type.$domain)])) {
-            if(time() - $this->ttl < $this->dnsCache[md5($type.$domain)]['created']) {
+    protected function getCache($type, $domain)
+    {
+        if (isset($this->dnsCache[md5($type.$domain)])) {
+            if (time() - $this->ttl < $this->dnsCache[md5($type.$domain)]['created']) {
                 return $this->dnsCache[md5($type.$domain)];
             } else {
                 unset($this->dnsCache[md5($type.$domain)]);
@@ -76,14 +77,14 @@ class ec2dns {
      * @param string $tag
      * @return false|string
      */
-    protected function resolve($type, $domain) {
-
-        if($dnsCache = $this->getCache($type, $domain)) {
+    protected function resolve($type, $domain)
+    {
+        if ($dnsCache = $this->getCache($type, $domain)) {
             return $dnsCache['ip'];
         } else {
             $ec2host = new ec2host(clone $this->ec2, $domain);
 
-            if($ec2host->instances) {
+            if ($ec2host->instances) {
                 $ip = gethostbyname($ec2host->instances[0]['dnsName']);
                 $this->setCache($type, $domain, $ip);
 
@@ -105,8 +106,8 @@ class ec2dns {
      * @param \Hoa\Core\Event\Bucket $bucket
      * @return false|string
      */
-    public function onQueryCallback(\Hoa\Core\Event\Bucket $bucket) {
-
+    public function onQueryCallback(\Hoa\Core\Event\Bucket $bucket)
+    {
         $data = $bucket->getData();
         //var_dump($data);
 
@@ -119,11 +120,10 @@ class ec2dns {
      *
      * @return void
      */
-    public function run() {
-
+    public function run()
+    {
         $this->dns->on('query', xcallable($this, 'onQueryCallback'));
         $this->dns->run();
 
     }
-
 }

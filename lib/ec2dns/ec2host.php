@@ -10,8 +10,8 @@ use ec2dns\ec2;
  * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
  * @author Dominik Tobschall (http://fruux.com/)
  */
-class ec2host {
-
+class ec2host
+{
     protected $ec2;
 
     protected $instanceTag;
@@ -26,8 +26,8 @@ class ec2host {
      * @param ec2 $ec2
      * @param string $instanceTag
      */
-    public function __construct(ec2 $ec2, $instanceTag = false) {
-
+    public function __construct(ec2 $ec2, $instanceTag = false)
+    {
         $this->ec2 = $ec2;
         $this->instanceTag = $instanceTag;
 
@@ -41,11 +41,11 @@ class ec2host {
      *
      * @return void
      */
-    protected function initFilters() {
-
+    protected function initFilters()
+    {
         $this->ec2->addFilter('instance-state-name', 'running');
 
-        if($this->instanceTag) {
+        if ($this->instanceTag) {
             $this->ec2->addFilter('tag:Name', $this->instanceTag);
         }
     }
@@ -56,16 +56,16 @@ class ec2host {
      *
      * @return void
      */
-    protected function run() {
-
+    protected function run()
+    {
         while ($instance = $this->ec2->getNext()) {
 
             $tag = false;
             $instanceId = false;
             $dnsName = false;
 
-            foreach($instance->instancesSet->item->tagSet->item as $tag) {
-                if($tag->key == 'Name' && !empty($tag->value)) {
+            foreach ($instance->instancesSet->item->tagSet->item as $tag) {
+                if ($tag->key == 'Name' && !empty($tag->value)) {
                     $tag = $tag->value;
                     break;
                 } else {
@@ -82,5 +82,4 @@ class ec2host {
         }
 
     }
-
 }
