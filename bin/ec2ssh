@@ -28,6 +28,12 @@ else
 fi
 
  #
+ # Set fancyPrompt
+ # @TODO: We have to know if a tag was replaced at all and we need the name of the tag that was replaced.
+ #
+fancyPrompt="echo \\\". ~/.bashrc && PS1='\[\e]0;tag-name: \w\\\a\]\[\\\033[01;32m\]tag-name\[\\\033[00m\]:\[\\\033[01;34m\]\w\[\\\033[00m\]\\\$ '\\\" > ~/.ec2dnsrc; /bin/bash --rcfile .ec2dnsrc -i"
+
+ #
  # run ssh
  #
-ssh $sshArguments
+#ssh -t $sshArguments \"$fancyPrompt\"

@@ -18,7 +18,7 @@ $paths = array(
     __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
 );
 
-foreach($paths as $path) {
+foreach ($paths as $path) {
     if (file_exists($path)) {
         include($path);
         break;
@@ -36,7 +36,7 @@ use ec2dns\ec2host;
  */
 try {
     $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'), getenv('EC2_URL'));
-} catch(Exception $e) {
+} catch (Exception $e) {
     fwrite(STDERR, $e->getMessage()."\n");
     die();
 }
@@ -44,7 +44,7 @@ try {
 /*
  * read /etc/hosts
  */
-if(!$hosts = file("/etc/hosts")) {
+if (!$hosts = file("/etc/hosts")) {
     fwrite(STDERR, "Could not read /etc/hosts.\n");
     die();
 }
@@ -59,8 +59,8 @@ $ec2host = new ec2host($ec2);
  */
 $existingEntries = 0;
 foreach ($hosts as $hostsLine => $hostsValue) {
-    if($hostsValue=="## ec2dns\n") {
-        if(!preg_match_all("/(#)(\\s+)(\\d+)(\\s+)(hosts)(\n)/is", $hosts[$hostsLine+1], $matches)) {
+    if ($hostsValue=="## ec2dns\n") {
+        if (!preg_match_all("/(#)(\\s+)(\\d+)(\\s+)(hosts)(\n)/is", $hosts[$hostsLine+1], $matches)) {
 
             fwrite(STDERR, "Found ec2dns marker in /etc/hosts, but something seems to be wrong.\nProbably you manually changed the ec2dns records.\nPlease remove them manually before running ec2dns again.\n");
             die();
@@ -71,7 +71,7 @@ foreach ($hosts as $hostsLine => $hostsValue) {
              * remove existing entries
              */
             $existingEntries = $matches[3][0];
-            for ($i=0; $i <= $existingEntries+1 ; $i++) { 
+            for ($i=0; $i <= $existingEntries+1; $i++) {
                 unset($hosts[$hostsLine+$i]);
             }
             $hosts = array_values($hosts);
@@ -88,7 +88,7 @@ $newHosts = array();
 $entries = 0;
 
 foreach ($ec2host->instances as $instance) {
-    if($instance['tag']!=$ec2host->emptyTag) {
+    if ($instance['tag']!=$ec2host->emptyTag) {
         array_push($newHosts, gethostbyname($instance['dnsName'])." ".$instance['tag']."\n");
         $entries++;
     }
@@ -104,10 +104,10 @@ array_splice($newHosts, 0, 0, $header);
 /*
  * add new entries to /etc/hosts
  */
-if($existingEntries > 0) {
-    
+if ($existingEntries > 0) {
+
     array_splice($hosts, $hostsLine, 0, $newHosts);
-    
+
 } else {
 
     foreach ($newHosts as $newHost) {
@@ -122,7 +122,7 @@ $hosts = implode("", $hosts);
  */
 $hostsHandle = @fopen("/etc/hosts", "w");
 
-if(!$hostsHandle) {
+if (!$hostsHandle) {
     fwrite(STDERR, "No write permissions for /etc/hosts. You have to run ec2dns like this: 'sudo -E ec2dns'.\n");
     die();
 }
@@ -136,7 +136,7 @@ fclose($hostsHandle);
 /*
  * Provide feedback
  */
-if($existingEntries > 0) {
+if ($existingEntries > 0) {
     echo "Updated ".$entries." hosts.\n";
 } else {
     echo "Added ".$entries." hosts.\n";
