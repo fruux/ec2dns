@@ -1,13 +1,19 @@
 #!/bin/bash
 
- # ec2ssh
- #
- # @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
- # @author Dominik Tobschall (http://fruux.com/)
+# ec2ssh
+#
+# @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
+# @author Dominik Tobschall (http://fruux.com/)
 
- #
- # Find script path
- #
+
+# Changing the window title
+setwindowtitle() {
+    printf "\033k$1\033\\"
+}
+
+#
+# Find script path
+#
 SOURCE="${BASH_SOURCE[0]}"
 DIR="$( dirname "$SOURCE" )"
 while [ -h "$SOURCE" ]
@@ -22,12 +28,17 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
  # Hand arguments to ec2dnshelper if we have any
  #
 if [ "$#" -ge 1 ]; then
-    sshArguments=$($DIR/ec2dnshelper $@)
+    eval $($DIR/ec2dnshelper $@)
+    setwindowtitle "ec2:$ec2host"
 else
-    sshArguments=""
+    ec2args=""
 fi
 
- #
- # run ssh
- #
-ssh $sshArguments
+#
+# run ssh
+#
+ssh $ec2args
+
+# back to some default.. could be wrong I suppose, but I'm not fully sure how
+# to capture the old name, and set that instead.
+setwindowtitle bash
