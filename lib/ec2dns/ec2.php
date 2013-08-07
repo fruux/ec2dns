@@ -85,7 +85,7 @@ class ec2
         );
 
         if (!isset($regions[strtolower($url)])) {
-            throw new \InvalidArgumentException('The supplied region is unknown.');
+            throw new \InvalidArgumentException('The supplied region is unknown. Check your EC2_URL environment variable.');
         }
 
         return $regions[strtolower($url)];
