@@ -80,11 +80,12 @@ class ec2
             'ec2.ap-northeast-1.amazonaws.com' => \AmazonEC2::REGION_APAC_NE1, // ap-northeast-1
             'ec2.ap-southeast-1.amazonaws.com' => \AmazonEC2::REGION_APAC_SE1, // ap-southeast-1
             'ec2.ap-southeast-2.amazonaws.com' => \AmazonEC2::REGION_APAC_SE2, // ap-southeast-2
-            'ec2.sa-east-1.amazonaws.com' => \AmazonEC2::REGION_SA_E1 // sa-east-1
+            'ec2.sa-east-1.amazonaws.com' => \AmazonEC2::REGION_SA_E1, // sa-east-1
+            'ec2.us-gov-west-1.amazonaws.com' => \AmazonEC2::REGION_US_GOV1 // us-gov-west-1
         );
 
         if (!isset($regions[strtolower($url)])) {
-            throw new \InvalidArgumentException('The supplied region is unknown.');
+            throw new \InvalidArgumentException('The supplied region is unknown. Check your EC2_URL environment variable.');
         }
 
         return $regions[strtolower($url)];

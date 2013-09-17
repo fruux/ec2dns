@@ -49,6 +49,8 @@ try {
     die();
 }
 
+$matchedHost = null;
+
 /*
  * Replace known tags with hostnames
  * (This needs optimization!)
@@ -66,12 +68,13 @@ if ($ec2host->instances) {
         foreach ($ec2host->instances as $instance) {
 
             if ($instance['tag']==$ec2host->emptyTag) {
-                break;
+                continue;
             }
 
-            $newArgumentValue = preg_replace('/(^.*@?)('.$instance['tag'].')(:?.*$)/i', '$1'.$instance['dnsName'].'$3', $argumentValue);
+            $newArgumentValue = preg_replace('/(^.*@?)('.  preg_quote($instance['tag'], '/') .')(:?.*$)/i', '$1'.$instance['dnsName'].'$3', $argumentValue);
             if ($newArgumentValue!=$argumentValue) {
                 $arguments[$argumentKey] = $newArgumentValue;
+                $matchedHost = $instance['tag'];
                 break;
             }
 
@@ -84,4 +87,6 @@ if ($ec2host->instances) {
 /*
  * Return processed arguments
  */
-echo(implode(' ', $arguments)."\n");
+
+echo "export ec2args=" .  escapeshellarg(implode(' ', $arguments)). ";\n";
+echo "export ec2host=" . $matchedHost . ";\n";
