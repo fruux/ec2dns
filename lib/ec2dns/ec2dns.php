@@ -10,7 +10,7 @@ from('Hoa')->import('Socket.Server')->import('Dns.~');
 /**
  * This class provides the functionality for the ec2dns application
  *
- * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
+ * @copyright Copyright (C) 2013 fruux GmbH. All rights reserved.
  * @author Dominik Tobschall (http://fruux.com/)
  */
 class ec2dns
@@ -19,9 +19,11 @@ class ec2dns
 
     protected $dnsCache = array();
 
-    protected $ttl = 300;
+    protected $ttl = 30;
 
-    protected $listener = 'udp://127.0.0.1:54';
+    protected $tld = "ec2";
+
+    protected $listener = 'udp://127.0.0.1:57005';
 
     /**
      * Creates the class.
@@ -37,32 +39,32 @@ class ec2dns
     }
     /**
      * dnsCache Setter
-     * @param string $type
-     * @param string $domain
-     * @param string $ip
      *
+     * @param string $type
+     * @param string $tag
+     * @param string $ip
      * @return void
      */
-    protected function setCache($type, $domain, $ip)
+    protected function setCache($type, $tag, $ip)
     {
-        $this->dnsCache[md5($type.$domain)] = array('ip' => $ip, 'created' => time());
+        $this->dnsCache[md5($type.$tag)] = array('ip' => $ip, 'created' => time());
 
     }
 
     /**
-     * dnsCaceh Getter
+     * dnsCache Getter
      *
      * @param  string $type
-     * @param  string $domain
+     * @param  string $tag
      * @return false|string
      */
-    protected function getCache($type, $domain)
+    protected function getCache($type, $tag)
     {
-        if (isset($this->dnsCache[md5($type.$domain)])) {
-            if (time() - $this->ttl < $this->dnsCache[md5($type.$domain)]['created']) {
-                return $this->dnsCache[md5($type.$domain)];
+        if (isset($this->dnsCache[md5($type.$tag)])) {
+            if (time() - $this->ttl < $this->dnsCache[md5($type.$tag)]['created']) {
+                return $this->dnsCache[md5($type.$tag)];
             } else {
-                unset($this->dnsCache[md5($type.$domain)]);
+                unset($this->dnsCache[md5($type.$tag)]);
                 return false;
             }
         } else {
@@ -72,26 +74,37 @@ class ec2dns
     }
 
     /**
-     * This method resolves tags to IPs via ec2host
+     * Returns the tag.
      *
+     * @param string $domain
+     * @return string
+     */
+    protected function stripTld($domain)
+    {
+        return preg_replace('/.'.$this->tld.'$/', '', $domain);
+    }
+
+    /**
+     * This method resolves tags to IPs via ec2host.
+     *
+     * @param string $type
      * @param string $tag
      * @return false|string
      */
-    protected function resolve($type, $domain)
+    protected function resolve($type, $tag)
     {
-        if ($dnsCache = $this->getCache($type, $domain)) {
+        if ($dnsCache = $this->getCache($type, $tag)) {
             return $dnsCache['ip'];
         } else {
-            $ec2host = new ec2host(clone $this->ec2, $domain);
+            $ec2host = new ec2host(clone $this->ec2, $tag);
 
             if ($ec2host->instances) {
                 $ip = gethostbyname($ec2host->instances[0]['dnsName']);
-                $this->setCache($type, $domain, $ip);
+                $this->setCache($type, $tag, $ip);
 
                 return $ip;
             } else {
 
-                $this->setCache($type, $domain, false);
                 return false;
 
             }
@@ -109,10 +122,7 @@ class ec2dns
     public function onQueryCallback(\Hoa\Core\Event\Bucket $bucket)
     {
         $data = $bucket->getData();
-        //var_dump($data);
-
-        return $this->resolve($data['type'], $data['domain']);
-
+        return $this->resolve($data['type'], $this->stripTld($data['domain']));
     }
 
     /**
@@ -124,6 +134,5 @@ class ec2dns
     {
         $this->dns->on('query', xcallable($this, 'onQueryCallback'));
         $this->dns->run();
-
     }
 }

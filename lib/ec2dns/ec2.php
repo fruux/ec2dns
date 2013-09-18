@@ -5,7 +5,7 @@ namespace ec2dns;
 /**
  * This class handles the communication with the ec2 api via the aws-sdk-for-php.
  *
- * @copyright Copyright (C) 2012 fruux GmbH. All rights reserved.
+ * @copyright Copyright (C) 2013 fruux GmbH. All rights reserved.
  * @author Dominik Tobschall (http://fruux.com/)
  */
 class ec2
