@@ -102,7 +102,6 @@ class ec2
     public function addFilter($name, $value)
     {
         array_push($this->filters, array('Name' => $name, 'Value' => $value));
-
     }
 
     /**
@@ -119,7 +118,13 @@ class ec2
         );
 
         if (!$instances->isOK()) {
-            throw new \RuntimeException('Request failed!');
+
+            if($instances->status === 401) {
+                throw new \RuntimeException('AWS was not able to validate the provided access credentials');
+            } else {
+                throw new \RuntimeException('Request failed!');
+            }
+
         }
 
         foreach ($instances->body->reservationSet->item as $instance) {
