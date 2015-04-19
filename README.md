@@ -4,9 +4,9 @@ ec2dns is a set of command line tools that makes it easy to resolve public hostn
 
 ## Usage of ec2dns
 
-ec2dns provides DNS resolution of ec2 tag names under the ".ec2" TLD. If a servers tag name would be `appserver-1`, it could be resolved as `appserver-1.ec2`.
+ec2dns provides DNS resolution of ec2 tag names under the ".ec2" TLD. If a servers tag name is `appserver-1`, it can be resolved as `appserver-1.ec2`.
 
-In essence ec2dns allows working with ec2 tag names like with normal domain names as shown in the following examples.
+ec2dns allows working with ec2 tag names like with normal domain names as shown in the following examples.
 
 ### ssh
 
@@ -44,7 +44,7 @@ mysql>
 
 ## Legacy tools
 
-ec2dns also includes wrappers around ssh and scp (if you can't set up or don't want to use the DNS feature on your machine), as well as a tool to lookup hostnames and a tool to update your /etc/hosts file.
+ec2dns also includes wrappers around ssh and scp (if you can't or don't want to set up the DNS feature on your machine), as well as a tool to lookup hostnames and a tool to update your /etc/hosts file.
 
 You won't need these legacy tools if you have set up the DNS feature as show in the installation instructions below.
 
@@ -143,7 +143,7 @@ $ ping appserver-1
 
 ### Basic
 
-* Create the file `~/bin/composer.json` with your favourite text editor and paste the following content (or update your existing `composer.json` accordingly, if you already use this approach for something else).
+* Create the file `~/bin/composer.json` with your favourite text editor and paste the following content (or update your existing `composer.json` accordingly, if you already use this approach for other composer packages).
 
 ```
 {
@@ -165,7 +165,7 @@ $ ping appserver-1
 
 These instructions are for OS X.
 
-* Add the configuration for the dns resolver by creating the file `/etc/resolver/ec2` and pasting the following content.
+* Add the configuration for the DNS resolver by creating the file `/etc/resolver/ec2` and pasting the following content.
 
 ```
 nameserver 127.0.0.1
@@ -216,7 +216,7 @@ ec2dns is inspired by [ec2-ssh](http://github.com/Instagram/ec2-ssh) and powered
 
 ## Copyright and license
 
-Copyright (C) 2013 [fruux GmbH](http://fruux.com). All rights reserved.
+Copyright (C) 2013-2015 [fruux GmbH](http://fruux.com). All rights reserved.
 
 *fruux is a free service that takes care of your contacts, calendars and more so you don't have to (powered by CardDAV and CalDAV).*
 

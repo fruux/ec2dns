@@ -10,7 +10,7 @@ from('Hoa')->import('Socket.Server')->import('Dns.~');
 /**
  * This class provides the functionality for the ec2dns application
  *
- * @copyright Copyright (C) 2013 fruux GmbH. All rights reserved.
+ * @copyright Copyright (C) 2012-2015 fruux GmbH. All rights reserved.
  * @author Dominik Tobschall (http://fruux.com/)
  */
 class ec2dns
