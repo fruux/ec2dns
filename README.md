@@ -101,7 +101,6 @@ $ ec2ssh appserver-1 uptime
 
 $ ec2ssh appserver-1 'uname -a'
  Linux ip-10-140-78-75 3.2.0-23-virtual #36-Ubuntu SMP Tue Apr 10 22:29:03 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
-$
 ```
 
 ### ec2scp
@@ -168,22 +167,33 @@ nameserver 127.0.0.1
 port 57005
 ```
 
-* Create the LaunchAgent configuration that starts the DNS server by creating the file `~/Library/LaunchAgents/com.fruux.ec2dns.plist` and pasting the following content (you have to adjust the path for your user directory).
+* Create the LaunchAgent configuration that starts the DNS server by creating the file `~/Library/LaunchAgents/com.fruux.ec2dns.plist` with the following command.
 
 ```
+tee ~/Library/LaunchAgents/com.fruux.ec2dns.plist <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
     <key>Label</key>
     <string>com.fruux.ec2dns</string>
-    <key>Program</key>
-    <string>/Users/YourUser/bin/ec2dns</string>
+    <key>ProgramArguments</key>
+  	<array>
+      <string>/bin/bash</string>
+      <string>-i</string>
+      <string>-l</string>
+      <string>-c</string>
+      <string>$HOME/.composer/vendor/bin/ec2dns</string>
+  	</array>
     <key>RunAtLoad</key>
     <true/>
+    <key>StandardErrorPath</key>
+    <string>/usr/local/var/log/ec2dns.log</string>
+    <key>StandardOutPath</key>
+    <string>/usr/local/var/log/ec2dns.log</string>
   </dict>
 </plist>
+EOF
 ```
 
 * Finally activate the LaunchAgent config by pasting the following into the terminal.
