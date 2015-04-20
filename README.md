@@ -138,23 +138,13 @@ $ ping appserver-1
 
 ### Basic
 
-* Create the file `~/bin/composer.json` with your favourite text editor and paste the following content (or update your existing `composer.json` accordingly, if you already use this approach for other composer packages).
+* The following command installs ec2dns via Composer.
 
 ```
-{
-    "require" : {
-
-        "fruux/ec2dns" : "dev-master"
-
-    },
-    "config" : {
-        "bin-dir" : "."
-    }
-}
+composer global require "fruux/ec2dns=dev-master"
 ```
 
-* Run `composer install` in your `~/bin` directory.
-* Composer will now install `ec2dns` and its dependencies.
+* Make sure you have `~/.composer/vendor/bin/` in your path.
 
 ### DNS feature
 
@@ -205,8 +195,7 @@ launchctl load ~/Library/LaunchAgents/com.fruux.ec2dns.plist
 ## Updating
 
 ```
-cd ~/bin
-composer update
+composer global update fruux/ec2dns
 
 launchctl unload ~/Library/LaunchAgents/com.fruux.ec2dns.plist
 launchctl load ~/Library/LaunchAgents/com.fruux.ec2dns.plist
