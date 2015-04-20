@@ -20,7 +20,6 @@ ubuntu@ip-1-11-11-11:~$
 ```
 $ scp ubuntu@appserver-1.ec2:/etc/nginx/nginx.conf .
 nginx.conf                                         100%  221     0.2KB/s   00:00
-
 ```
 
 ### mysql
