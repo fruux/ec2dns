@@ -34,7 +34,7 @@ class ec2dns
     public function __construct(ec2 $ec2)
     {
         $this->ec2 = $ec2;
-        $this->dns = new \Hoa\Dns(new \Hoa\Socket\Server($this->listener));
+        $this->dns = new \Hoa\Dns\Resolver(new \Hoa\Socket\Server($this->listener));
 
     }
     /**
