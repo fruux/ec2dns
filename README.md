@@ -19,8 +19,8 @@ ubuntu@ip-1-11-11-11:~$
 
 ```
 $ scp ubuntu@appserver-1.ec2:/etc/nginx/nginx.conf .
-nginx.conf                                                                           100%  221     0.2KB/s   00:00
-$
+nginx.conf                                         100%  221     0.2KB/s   00:00
+
 ```
 
 ### mysql
@@ -56,7 +56,6 @@ You won't need these legacy tools if you have set up the DNS feature as show in 
 $ ec2host
 i-12345678: appserver-1    ec9-99-99-99-99.compute-1.amazonaws.com
 i-87654321: appserver-2    ec1-11-11-11-11.compute-1.amazonaws.com
-$
 ```
 
 #### Get the hostname of an ec2 instance by its name tag
@@ -64,7 +63,6 @@ $
 ```
 $ ec2host appserver-1
 ec9-99-99-99-99.compute-1.amazonaws.com
-$
 ```
 
 #### combine ec2host with other commands by using backticks
@@ -100,7 +98,6 @@ ubuntu@ip-1-11-11-11:~$
 ```
 $ ec2ssh appserver-1 uptime
  13:09:10 up 1 day, 14:23,  0 users,  load average: 0.35, 0.36, 0.35
-$
 
 $ ec2ssh appserver-1 'uname -a'
  Linux ip-10-140-78-75 3.2.0-23-virtual #36-Ubuntu SMP Tue Apr 10 22:29:03 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
@@ -113,8 +110,7 @@ $
 
 ```
 $ ec2scp ubuntu@appserver-1:/etc/nginx/nginx.conf .
-nginx.conf                                                                           100%  221     0.2KB/s   00:00
-$
+nginx.conf                                         100%  221     0.2KB/s   00:00
 ```
 
 ### ec2updatehostsfile
