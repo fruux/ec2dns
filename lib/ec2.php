@@ -16,17 +16,18 @@ class ec2
 
     protected $instances = array();
 
-    protected $defaultRegion = \Aws\Common\Enum\Region::US_EAST_1;
+    protected $defaultRegion = 'us-east-1';
 
     /**
      * Creates the class.
      *
-     * @param ec2dns $app
+     * @param string $awsKey
+     * @param string $awsSecret
+     * @param string $Aws\Common\Enum\Region
      */
-    public function __construct($awsKey, $awsSecret, $region = false)
+    public function __construct($awsKey, $awsSecret, $awsRegion = false)
     {
-        $this->initEC2($awsKey, $awsSecret, $region);
-
+        $this->initEC2($awsKey, $awsSecret, $awsRegion);
     }
 
     /**
@@ -34,18 +35,16 @@ class ec2
      *
      * @param string $awsKey
      * @param string $awsSecret
+     * @param string \Aws\Common\Enum\Region
      * @return void
      */
-    private function initEC2($awsKey, $awsSecret, $region = false)
+    private function initEC2($awsKey, $awsSecret, $awsRegion = false)
     {
         if (!empty($awsKey) && !empty($awsSecret)) {
 
             $this->awsEC2 = \Aws\Ec2\Ec2Client::factory(array(
-                'credentials' => array(
-                    'key' => $awsKey,
-                    'secret' => $awsSecret,
-                ),
-                'region' => empty($region) ? $this->defaultRegion : $this->getRegionByUrl($region)
+                'credentials' => new \Aws\Common\Credentials\Credentials($awsKey, $awsSecret),
+                'region' => empty($awsRegion) ? $this->defaultRegion : $this->getRegionByUrl($awsRegion)
             ));
 
         } else {
@@ -65,24 +64,28 @@ class ec2
      */
     private function getRegionByUrl($url)
     {
-        $url = parse_url($url, \PHP_URL_HOST);
+        $url = strtolower(parse_url($url, \PHP_URL_HOST));
 
         $regions = array(
-            'ec2.us-east-1.amazonaws.com' => \Aws\Common\Enum\Region::US_EAST_1, // us-east-1
-            'ec2.us-west-1.amazonaws.com' => \Aws\Common\Enum\Region::US_WEST_1, // us-west-1
-            'ec2.us-west-2.amazonaws.com' => \Aws\Common\Enum\Region::US_WEST_2, // us-west-2
-            'ec2.eu-west-1.amazonaws.com' => \Aws\Common\Enum\Region::EU_WEST_1, // eu-west-1
-            'ec2.eu-central-1.amazonaws.com' => \Aws\Common\Enum\Region::EU_CENTRAL_1, // eu-central-1
-            'ec2.ap-northeast-1.amazonaws.com' => \Aws\Common\Enum\Region::AP_NORTHEAST_1, // ap-northeast-1
-            'ec2.ap-southeast-1.amazonaws.com' => \Aws\Common\Enum\Region::AP_SOUTHEAST_1, // ap-southeast-1
-            'ec2.ap-southeast-2.amazonaws.com' => \Aws\Common\Enum\Region::AP_SOUTHEAST_2, // ap-southeast-2
-            'ec2.sa-east-1.amazonaws.com' => \Aws\Common\Enum\Region::SA_EAST_1, // sa-east-1
-            'ec2.cn-north-1.amazonaws.com.cn' => \Aws\Common\Enum\Region::CN_NORTH_1, // cn-north-1
-            'ec2.us-gov-west-1.amazonaws.com' => \Aws\Common\Enum\Region::US_GOV_WEST_1 // us-gov-west-1
+            'ec2.us-east-1.amazonaws.com' => 'us-east-1',
+            'ec2.us-west-1.amazonaws.com' => 'us-west-1',
+            'ec2.us-west-2.amazonaws.com' => 'us-west-2',
+            'ec2.eu-west-1.amazonaws.com' => 'eu-west-1',
+            'ec2.eu-central-1.amazonaws.com' => 'eu-central-1',
+            'ec2.ap-northeast-1.amazonaws.com' => 'ap-northeast-1',
+            'ec2.ap-southeast-1.amazonaws.com' => 'ap-southeast-1',
+            'ec2.ap-southeast-2.amazonaws.com' => 'ap-southeast-2',
+            'ec2.sa-east-1.amazonaws.com' => 'sa-east-1',
+            'ec2.cn-north-1.amazonaws.com.cn' => 'cn-north-1',
+            'ec2.us-gov-west-1.amazonaws.com' => 'us-gov-west-1'
         );
 
-        if (!isset($regions[strtolower($url)])) {
+        if(!isset($regions[$url])) {
             throw new \InvalidArgumentException('The supplied region is unknown. Check your EC2_URL environment variable.');
+        }
+
+        if(!in_array($regions[$url], \Aws\Common\Enum\Region::values())) {
+            throw new \InvalidArgumentException('The supplied region is known, but not supported by your version of aws/aws-sdk-php.');
         }
 
         return $regions[strtolower($url)];
