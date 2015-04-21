@@ -41,11 +41,11 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
-## Legacy tools
+## ec2dns wrapper tools
 
 ec2dns also includes wrappers around ssh and scp (if you can't or don't want to set up the DNS feature on your machine), as well as a tool to lookup hostnames and a tool to update your /etc/hosts file.
 
-You won't need these legacy tools if you have set up the DNS feature as show in the installation instructions below.
+You won't need these wrapper tools if you have set up the DNS feature as shown in the installation instructions below.
 
 ### ec2host
 
