@@ -44,5 +44,10 @@ try {
 /*
  * Instantiate ec2dns
  */
-$ec2dns = new ec2dns($ec2);
-$ec2dns->run();
+try {
+    $ec2dns = new ec2dns($ec2);
+    $ec2dns->run();
+} catch (Exception $e) {
+    fwrite(STDERR, $e->getMessage()."\n");
+    die();
+}

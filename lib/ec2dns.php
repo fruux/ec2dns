@@ -35,7 +35,6 @@ class ec2dns
     {
         $this->ec2 = $ec2;
         $this->dns = new \Hoa\Dns\Resolver(new \Hoa\Socket\Server($this->listener));
-
     }
     /**
      * dnsCache Setter
@@ -132,7 +131,11 @@ class ec2dns
      */
     public function run()
     {
-        $this->dns->on('query', xcallable($this, 'onQueryCallback'));
-        $this->dns->run();
+        try {
+            $this->dns->on('query', xcallable($this, 'onQueryCallback'));
+            $this->dns->run();
+        } catch(\Hoa\Socket\Exception $e) {
+            throw new \InvalidArgumentException($e->getMessage());
+        }
     }
 }

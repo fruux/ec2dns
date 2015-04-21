@@ -88,5 +88,5 @@ if ($ec2host->instances) {
  * Return processed arguments
  */
 
-echo "export ec2args=" .  escapeshellarg(implode(' ', $arguments)). ";\n";
+echo "export ec2args=" . escapeshellarg(implode(' ', $arguments)). ";\n";
 echo "export ec2host=" . $matchedHost . ";\n";

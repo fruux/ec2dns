@@ -43,10 +43,10 @@ class ec2host
      */
     protected function initFilters()
     {
-        $this->ec2->addFilter('instance-state-name', 'running');
+        $this->ec2->addFilter('instance-state-name', array('running'));
 
         if ($this->instanceTag) {
-            $this->ec2->addFilter('tag:Name', $this->instanceTag);
+            $this->ec2->addFilter('tag:Name', array($this->instanceTag));
         }
     }
 
@@ -64,17 +64,17 @@ class ec2host
             $instanceId = false;
             $dnsName = false;
 
-            foreach ($instance->instancesSet->item->tagSet->item as $tag) {
-                if ($tag->key == 'Name' && !empty($tag->value)) {
-                    $tag = $tag->value;
+            foreach ($instance['Tags'] as $tag) {
+                if ($tag['Key'] == 'Name' && !empty($tag['Value'])) {
+                    $tag = $tag['Value'];
                     break;
                 } else {
                     $tag = false;
                 }
             }
 
-            $instanceId = $instance->instancesSet->item->instanceId;
-            $dnsName = $instance->instancesSet->item->dnsName;
+            $instanceId = $instance['InstanceId'];
+            $dnsName = $instance['PublicDnsName'];
             $tag = ( $tag ) ? $tag : $this->emptyTag;
 
             array_push($this->instances, array("instanceId" => $instanceId, "dnsName" => $dnsName, "tag" => $tag));
