@@ -41,7 +41,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
-## ec2dns wrapper tools
+## ec2dns tools
 
 ec2dns also includes wrappers around ssh and scp (if you can't or don't want to set up the DNS feature on your machine), as well as a tool to lookup hostnames and a tool to update your /etc/hosts file.
 
@@ -140,7 +140,7 @@ $ ping appserver-1
 * The following command installs ec2dns via Composer.
 
 ```
-composer global require "fruux/ec2dns=dev-master"
+composer global require "fruux/ec2dns=~2.0.0"
 ```
 
 * Make sure you have `~/.composer/vendor/bin/` in your path.
