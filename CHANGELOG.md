@@ -7,19 +7,24 @@ Changelog
 * Added: Built-in DNS server, #13.
 * Migrated to aws/aws-sdk-php v2, #12.
 
-1.4.0 (2013-08-07)
+1.4.1 (2014-10-14)
+------------------
+
+* Fixed: Better exception on auth failure, #10.
+
+1.4.0 (2013-07-08)
 ------------------
 
 * Added: Support for EC2_URL env var, #3.
 * Added: Window name support for tmux, #5 (Thanks, @evert).
 * Added: Updated AWS regions.
-* Fix for instance tag parsing, #4 (Thanks, @sleets).
-* Fix for failing hostname lookup in ec2ssh, #6 (Thanks, @evert).
+* Fixed: Instance tag parsing, #4 (Thanks, @sleets).
+* Fixed: Failing hostname lookup in ec2ssh, #6 (Thanks, @evert).
 
 1.3.0 (2012-11-28)
 ------------------
 
-* Interactive shell support for ec2ssh.
+* Added: Interactive shell support for ec2ssh.
 
 1.2.0 (2012-09-12)
 ------------------
