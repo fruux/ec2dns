@@ -6,10 +6,13 @@
     "homepage" : "https://github.com/fruux/ec2dns",
     "license" : "BSD-3-Clause",
     "require": {
-        "php":">=5.3.3",
+        "php":">=5.4.0",
         "aws/aws-sdk-php": "^2.3.0",
         "hoa/dns": "~2.0",
         "hoa/socket": "~0.0"
+    },
+    "require-dev": {
+        "sabre/cs" : "dev-master"
     },
     "minimum-stability": "dev",
     "autoload" : {
@@ -17,7 +20,17 @@
             "ec2dns\\" : "lib/"
         }
     },
-    "bin": ["bin/ec2dns", "bin/ec2updatehostsfile", "bin/ec2host", "bin/ec2ssh", "bin/ec2scp", "bin/ec2dnshelper"],
+    "config" : {
+        "bin-dir" : "bin"
+    },
+    "bin": [
+        "bin/ec2dns",
+        "bin/ec2updatehostsfile",
+        "bin/ec2host",
+        "bin/ec2ssh",
+        "bin/ec2scp",
+        "bin/ec2dnshelper"
+    ],
     "authors": [
         {
             "name": "Dominik Tobschall"

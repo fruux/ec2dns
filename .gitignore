@@ -1,3 +1,7 @@
 vendor
 composer.lock
 composer.phar
+
+bin/hoa
+bin/php-cs-fixer
+bin/sabre-cs-fixer
