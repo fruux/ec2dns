@@ -13,10 +13,10 @@
  * Credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
  */
 
-$paths = array(
+$paths = [
     __DIR__ . '/../vendor/autoload.php',  // In case the project is cloned directly
     __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
-);
+];
 
 foreach ($paths as $path) {
     if (file_exists($path)) {
@@ -37,7 +37,7 @@ use ec2dns\ec2host;
 try {
     $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'), getenv('EC2_URL'));
 } catch (Exception $e) {
-    fwrite(STDERR, $e->getMessage()."\n");
+    fwrite(STDERR, $e->getMessage() . "\n");
     die();
 }
 
@@ -55,8 +55,8 @@ if (isset($argv[1])) {
  */
 foreach ($ec2host->instances as $instance) {
     if (isset($argv[1])) {
-        echo $instance['dnsName']."\n";
+        echo $instance['dnsName'] . "\n";
     } else {
-        echo $instance['instanceId'].": ".$instance['tag']."\t".$instance['dnsName']."\n";
+        echo $instance['instanceId'] . ": " . $instance['tag'] . "\t" . $instance['dnsName'] . "\n";
     }
 }

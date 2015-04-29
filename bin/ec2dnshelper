@@ -13,10 +13,10 @@
  * Credit: https://github.com/evert/sabre-vobject/blob/master/bin/vobjectvalidate.php
  */
 
-$paths = array(
+$paths = [
     __DIR__ . '/../vendor/autoload.php',  // In case the project is cloned directly
     __DIR__ . '/../../../autoload.php',   // In case the project is a composer dependency.
-);
+];
 
 foreach ($paths as $path) {
     if (file_exists($path)) {
@@ -45,7 +45,7 @@ use ec2dns\ec2host;
 try {
     $ec2 = new ec2(getenv('AWS_ACCESS_KEY_ID'), getenv('AWS_SECRET_ACCESS_KEY'), getenv('EC2_URL'));
 } catch (Exception $e) {
-    fwrite(STDERR, $e->getMessage()."\n");
+    fwrite(STDERR, $e->getMessage() . "\n");
     die();
 }
 
@@ -67,12 +67,12 @@ if ($ec2host->instances) {
 
         foreach ($ec2host->instances as $instance) {
 
-            if ($instance['tag']==$ec2host->emptyTag) {
+            if ($instance['tag'] == $ec2host->emptyTag) {
                 continue;
             }
 
-            $newArgumentValue = preg_replace('/(^.*@?)('.  preg_quote($instance['tag'], '/') .')(:?.*$)/i', '$1'.$instance['dnsName'].'$3', $argumentValue);
-            if ($newArgumentValue!=$argumentValue) {
+            $newArgumentValue = preg_replace('/(^.*@?)(' .  preg_quote($instance['tag'], '/') . ')(:?.*$)/i', '$1' . $instance['dnsName'] . '$3', $argumentValue);
+            if ($newArgumentValue != $argumentValue) {
                 $arguments[$argumentKey] = $newArgumentValue;
                 $matchedHost = $instance['tag'];
                 break;
@@ -87,6 +87,5 @@ if ($ec2host->instances) {
 /*
  * Return processed arguments
  */
-
-echo "export ec2args=" . escapeshellarg(implode(' ', $arguments)). ";\n";
+echo "export ec2args=" . escapeshellarg(implode(' ', $arguments)) . ";\n";
 echo "export ec2host=" . $matchedHost . ";\n";

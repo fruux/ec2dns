@@ -15,6 +15,6 @@ cache: vendor
 sudo: false
 
 script:
-  - ./bin/sabre-cs-fixer fix --diff --dry-run .
+  - ./bin/sabre-cs-fixer fix . --dry-run --diff
 
 before_script: composer install --dev

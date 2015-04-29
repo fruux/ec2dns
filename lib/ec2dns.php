@@ -2,22 +2,17 @@
 
 namespace ec2dns;
 
-use ec2dns\ec2;
-use ec2dns\ec2host;
-
-from('Hoa')->import('Socket.Server')->import('Dns.~');
-
 /**
  * This class provides the functionality for the ec2dns application
  *
  * @copyright Copyright (C) 2012-2015 fruux GmbH. All rights reserved.
  * @author Dominik Tobschall (http://fruux.com/)
  */
-class ec2dns
-{
+class ec2dns {
+
     protected $ec2;
 
-    protected $dnsCache = array();
+    protected $dnsCache = [];
 
     protected $ttl = 30;
 
@@ -31,11 +26,13 @@ class ec2dns
      * @param ec2 $ec2
      * @param string $instanceTag
      */
-    public function __construct(ec2 $ec2)
-    {
+    function __construct(ec2 $ec2) {
+
         $this->ec2 = $ec2;
         $this->dns = new \Hoa\Dns\Resolver(new \Hoa\Socket\Server($this->listener));
+
     }
+
     /**
      * dnsCache Setter
      *
@@ -44,9 +41,9 @@ class ec2dns
      * @param string $ip
      * @return void
      */
-    protected function setCache($type, $tag, $ip)
-    {
-        $this->dnsCache[md5($type.$tag)] = array('ip' => $ip, 'created' => time());
+    protected function setCache($type, $tag, $ip) {
+
+        $this->dnsCache[md5($type . $tag)] = ['ip' => $ip, 'created' => time()];
 
     }
 
@@ -59,11 +56,11 @@ class ec2dns
      */
     protected function getCache($type, $tag)
     {
-        if (isset($this->dnsCache[md5($type.$tag)])) {
-            if (time() - $this->ttl < $this->dnsCache[md5($type.$tag)]['created']) {
-                return $this->dnsCache[md5($type.$tag)];
+        if (isset($this->dnsCache[md5($type . $tag)])) {
+            if (time() - $this->ttl < $this->dnsCache[md5($type . $tag)]['created']) {
+                return $this->dnsCache[md5($type . $tag)];
             } else {
-                unset($this->dnsCache[md5($type.$tag)]);
+                unset($this->dnsCache[md5($type . $tag)]);
                 return false;
             }
         } else {
@@ -78,9 +75,10 @@ class ec2dns
      * @param string $domain
      * @return string
      */
-    protected function stripTld($domain)
-    {
-        return preg_replace('/.'.$this->tld.'$/', '', $domain);
+    protected function stripTld($domain) {
+
+        return preg_replace('/.' . $this->tld . '$/', '', $domain);
+
     }
 
     /**
@@ -90,8 +88,8 @@ class ec2dns
      * @param string $tag
      * @return false|string
      */
-    protected function resolve($type, $tag)
-    {
+    protected function resolve($type, $tag) {
+
         if ($dnsCache = $this->getCache($type, $tag)) {
             return $dnsCache['ip'];
         } else {
@@ -103,9 +101,7 @@ class ec2dns
 
                 return $ip;
             } else {
-
                 return false;
-
             }
 
         }
@@ -118,10 +114,11 @@ class ec2dns
      * @param \Hoa\Core\Event\Bucket $bucket
      * @return false|string
      */
-    public function onQueryCallback(\Hoa\Core\Event\Bucket $bucket)
-    {
+    function onQueryCallback(\Hoa\Core\Event\Bucket $bucket) {
+
         $data = $bucket->getData();
         return $this->resolve($data['type'], $this->stripTld($data['domain']));
+
     }
 
     /**
@@ -129,13 +126,15 @@ class ec2dns
      *
      * @return void
      */
-    public function run()
-    {
+    function run() {
+
         try {
             $this->dns->on('query', xcallable($this, 'onQueryCallback'));
             $this->dns->run();
-        } catch(\Hoa\Socket\Exception $e) {
+        } catch (\Hoa\Socket\Exception $e) {
             throw new \InvalidArgumentException($e->getMessage());
         }
+
     }
+
 }
