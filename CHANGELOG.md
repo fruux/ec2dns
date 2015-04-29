@@ -5,7 +5,9 @@ Changelog
 ------------------
 
 * Added: Built-in DNS server, #13.
+* Fixed: Coding standards using sabre/cs.
 * Migrated to aws/aws-sdk-php v2, #12.
+
 
 1.4.1 (2014-10-14)
 ------------------
