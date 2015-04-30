@@ -206,7 +206,7 @@ Please submit all pull requests against the master branch. Code accompanied with
 
 ## Acknowledgements
 
-ec2dns is inspired by [ec2-ssh](http://github.com/Instagram/ec2-ssh) and powered by [aws-sdk-for-php](http://github.com/amazonwebservices/aws-sdk-for-php).
+ec2dns is inspired by [ec2-ssh](http://github.com/Instagram/ec2-ssh) and powered by [aws/aws-sdk-php](https://github.com/aws/aws-sdk-php).
 
 ## Copyright and license
 
