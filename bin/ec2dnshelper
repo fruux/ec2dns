@@ -33,6 +33,9 @@ if (!isset($argv[1])) {
     die();
 }
 
+/* Setting a default timezone so PHP doesn't emit any warnings */
+date_default_timezone_set('UTC');
+
 /*
  * Import namespaces
  */
