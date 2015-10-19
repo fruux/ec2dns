@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.0.1 (????-??-??)
+------------------
+
+* Fixed: Supressing the PHP default timezone setting if this is not set in
+  `php.ini`.
+
 2.0.0 (2015-04-29)
 ------------------
 
