@@ -7,14 +7,13 @@
     "license" : "BSD-3-Clause",
     "require": {
         "php":">=5.4.0",
-        "aws/aws-sdk-php": "^2.3.0",
-        "hoa/dns": "~2.0",
-        "hoa/socket": "~0.0"
+        "aws/aws-sdk-php": "~2.8.0",
+        "hoa/dns": "~3.0",
+        "hoa/socket": "~1.0"
     },
     "require-dev": {
         "sabre/cs" : "dev-master"
     },
-    "minimum-stability": "dev",
     "autoload" : {
         "psr-4" : {
             "ec2dns\\" : "lib/"
