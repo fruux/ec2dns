@@ -1,11 +1,11 @@
 Changelog
 =========
 
-2.0.1 (????-??-??)
+2.0.1 (2016-03-18)
 ------------------
 
-* Fixed: Supressing the PHP default timezone setting if this is not set in
-  `php.ini`.
+* Updated to latest v2 aws/aws-sdk-php, #17.
+* Fixed: Default timezone to suppress PHP warnings, #16.
 
 2.0.0 (2015-04-29)
 ------------------
