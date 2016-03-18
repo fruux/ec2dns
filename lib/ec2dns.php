@@ -111,10 +111,10 @@ class ec2dns {
     /**
      * onQuery callback
      *
-     * @param \Hoa\Core\Event\Bucket $bucket
+     * @param \Hoa\Event\Bucket $bucket
      * @return false|string
      */
-    function onQueryCallback(\Hoa\Core\Event\Bucket $bucket) {
+    function onQueryCallback(\Hoa\Event\Bucket $bucket) {
 
         $data = $bucket->getData();
         return $this->resolve($data['type'], $this->stripTld($data['domain']));
