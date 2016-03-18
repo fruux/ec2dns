@@ -210,7 +210,7 @@ ec2dns is inspired by [ec2-ssh](http://github.com/Instagram/ec2-ssh) and powered
 
 ## Copyright and license
 
-Copyright (C) 2013-2015 [fruux GmbH](http://fruux.com). All rights reserved.
+Copyright (c) [fruux GmbH](http://fruux.com). All rights reserved.
 
 *fruux is a free service that takes care of your contacts, calendars and more so you don't have to (powered by CardDAV and CalDAV).*
 
