@@ -6,7 +6,7 @@
     "homepage" : "https://github.com/fruux/ec2dns",
     "license" : "BSD-3-Clause",
     "require": {
-        "php":">=5.4.0",
+        "php":">=5.5.0",
         "aws/aws-sdk-php": "~2.8.0",
         "hoa/dns": "~3.0",
         "hoa/socket": "~1.0"
