@@ -63,13 +63,17 @@ class ec2host {
             $instanceId = false;
             $dnsName = false;
 
-            foreach ($instance['Tags'] as $tag) {
-                if ($tag['Key'] == 'Name' && !empty($tag['Value'])) {
-                    $tag = $tag['Value'];
-                    break;
-                } else {
-                    $tag = false;
+            if (isset($instance['Tags'])) {
+
+                foreach ($instance['Tags'] as $tag) {
+                    if ($tag['Key'] == 'Name' && !empty($tag['Value'])) {
+                        $tag = $tag['Value'];
+                        break;
+                    } else {
+                        $tag = false;
+                    }
                 }
+
             }
 
             $instanceId = $instance['InstanceId'];
