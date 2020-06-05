@@ -156,31 +156,31 @@ nameserver 127.0.0.1
 port 57005
 ```
 
-* Create the LaunchAgent configuration that starts the DNS server by creating the file `~/Library/LaunchAgents/com.fruux.ec2dns.plist` with the following command.
+* Create the LaunchAgent configuration that starts the DNS server by creating the file `~/Library/LaunchAgents/com.fruux.ec2dns.plist` with the following command. If you are using ZSH, you'll have to change `/bin/bash` to `/bin/zsh`.
 
 ```
 tee ~/Library/LaunchAgents/com.fruux.ec2dns.plist <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>com.fruux.ec2dns</string>
-    <key>ProgramArguments</key>
-  	<array>
-      <string>/bin/bash</string>
-      <string>-i</string>
-      <string>-l</string>
-      <string>-c</string>
-      <string>$HOME/.composer/vendor/bin/ec2dns</string>
-  	</array>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>StandardErrorPath</key>
-    <string>/usr/local/var/log/ec2dns.log</string>
-    <key>StandardOutPath</key>
-    <string>/usr/local/var/log/ec2dns.log</string>
-  </dict>
+	<dict>
+		<key>Label</key>
+		<string>com.fruux.ec2dns</string>
+		<key>ProgramArguments</key>
+		<array>
+			<string>/bin/bash</string>
+			<string>-i</string>
+			<string>-l</string>
+			<string>-c</string>
+			<string>$HOME/.composer/vendor/bin/ec2dns</string>
+		</array>
+		<key>RunAtLoad</key>
+		<true/>
+		<key>StandardErrorPath</key>
+		<string>/usr/local/var/log/ec2dns.log</string>
+		<key>StandardOutPath</key>
+		<string>/usr/local/var/log/ec2dns.log</string>
+	</dict>
 </plist>
 EOF
 ```
